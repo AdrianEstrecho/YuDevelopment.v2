@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Chakra_Petch } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import AdminShortcut from "@/components/AdminShortcut";
 import { getContent } from "@/lib/content";
 import "./globals.css";
 
@@ -44,7 +43,6 @@ export default async function RootLayout({
         />
         <main className="flex-1">{children}</main>
         <Footer brand={content.brand} navigation={content.navigation.links} />
-        <AdminShortcut />
       </body>
     </html>
   );
