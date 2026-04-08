@@ -311,6 +311,12 @@ export async function getContent(): Promise<SiteContent> {
 
   const fallback = await getFallback();
 
+  // If the Sanity client couldn't be created (missing/invalid env vars),
+  // skip the network call and just use the fallback content.
+  if (!client) {
+    return fallback;
+  }
+
   try {
     const [brand, navigation, home, about, portfolio, people, invest, contact] = await Promise.all([
       client.fetch(BRAND_QUERY),
