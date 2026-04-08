@@ -1,0 +1,362 @@
+{
+  "brand": {
+    "namePart1": "YU",
+    "namePart2": "DEVELOPMENT",
+    "tagline": "The golden goose of YGCCC. Generating cash flow through development services and building long-term equity through multifamily real estate.",
+    "email": "info@yudevelopment.com",
+    "copyright": "YGCCC"
+  },
+  "navigation": {
+    "links": [
+      {
+        "href": "/",
+        "label": "Home"
+      },
+      {
+        "href": "/about",
+        "label": "About"
+      },
+      {
+        "href": "/portfolio",
+        "label": "Portfolio"
+      },
+      {
+        "href": "/people",
+        "label": "People"
+      },
+      {
+        "href": "/invest",
+        "label": "Invest"
+      },
+      {
+        "href": "/contact",
+        "label": "Contact"
+      }
+    ]
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Services · Development · Equity",
+      "titleLine1": "GOLDEN",
+      "titleLine2": "GOOSE",
+      "description": "The cash-flow engine of YGCCC. Building long-term wealth through multifamily real estate.",
+      "primaryCta": "View Projects",
+      "secondaryCta": "Get in Touch",
+      "backgroundImage": ""
+    },
+    "armA": {
+      "label": "A. Development Services",
+      "title": "Sales",
+      "description": "Third-party services generating operating revenue to fund YGCCC's growth and operations.",
+      "items": [
+        "Architectural and engineering coordination",
+        "Development consulting and feasibility analysis",
+        "Entitlement support and predevelopment advisory"
+      ]
+    },
+    "armB": {
+      "label": "B. Internal Development",
+      "title": "Equity Arm",
+      "description": "Predevelopment and execution on YGCCC-owned multifamily projects — where long-term wealth is built.",
+      "items": [
+        "Market identification and land sourcing",
+        "Investor relations and capital raising",
+        "Deal structuring and entitlements",
+        "Conceptual design and project oversight"
+      ]
+    },
+    "capabilities": {
+      "label": "Our Capabilities",
+      "title": "End-to-End Development Platform",
+      "description": "From feasibility to stabilization, YuDevelopment covers every dimension of the real estate development lifecycle.",
+      "items": [
+        {
+          "title": "Architectural & Engineering Coordination",
+          "description": "Managing complex design teams and engineering consultants to deliver cohesive project documentation on time and on budget."
+        },
+        {
+          "title": "Development Consulting",
+          "description": "Feasibility analysis, pro forma modeling, and strategic advisory for landowners, investors, and developers navigating new projects."
+        },
+        {
+          "title": "Entitlement & Predevelopment",
+          "description": "Guiding projects through zoning, permitting, and regulatory approvals with deep knowledge of local jurisdictions."
+        },
+        {
+          "title": "Market Identification & Land Sourcing",
+          "description": "Pinpointing high-growth markets and sourcing strategic parcels for YGCCC-owned multifamily developments."
+        },
+        {
+          "title": "Investor Relations & Capital Raising",
+          "description": "Building lasting partnerships with investors through transparency, disciplined underwriting, and consistent deal flow."
+        },
+        {
+          "title": "Deal Structuring & Project Oversight",
+          "description": "Structuring capital stacks, managing entitlements, and overseeing conceptual design through project delivery."
+        }
+      ]
+    },
+    "featuredProjects": [
+      {
+        "name": "Vista Multifamily",
+        "type": "Multifamily Development",
+        "units": "120 Units",
+        "status": "Pre-Development",
+        "image": ""
+      },
+      {
+        "name": "Greenfield Residences",
+        "type": "Workforce Housing",
+        "units": "96 Units",
+        "status": "In Entitlements",
+        "image": ""
+      },
+      {
+        "name": "Meridian Apartments",
+        "type": "Urban Infill",
+        "units": "64 Units",
+        "status": "Feasibility",
+        "image": ""
+      }
+    ],
+    "cta": {
+      "eyebrow": "Partner With Us",
+      "title": "Ready to Build Long-Term Wealth?",
+      "description": "Whether you need development services for your next project or want to invest alongside YGCCC, we'd love to connect.",
+      "primaryCta": "Investment Opportunities",
+      "secondaryCta": "Contact Us"
+    }
+  },
+  "about": {
+    "hero": {
+      "eyebrow": "About Us",
+      "titleLine1": "Cash Flow Funds Equity.",
+      "titleLine2": "Equity Builds Wealth.",
+      "description": "YuDevelopment is the operating engine of YGCCC — generating revenue through development services while building long-term wealth through owned multifamily projects."
+    },
+    "model": {
+      "label": "The Model",
+      "title": "Two Arms, One Mission",
+      "paragraphs": [
+        "YuDevelopment operates as the golden goose of YGCCC through a deliberate dual-arm structure. The first arm — Development Services — provides architectural coordination, consulting, feasibility analysis, and entitlement support to third-party clients, generating the cash flow that funds operations.",
+        "The second arm — Internal Development — deploys that capital into YGCCC-owned multifamily projects. This is where long-term wealth is built: through market identification, land sourcing, investor relations, deal structuring, and project oversight on assets we own.",
+        "The result is a self-funding development platform where services revenue fuels equity creation — no external operating capital required for the machine to run."
+      ]
+    },
+    "stats": [
+      {
+        "value": "A",
+        "label": "Services Arm",
+        "sublabel": "Cash Flow"
+      },
+      {
+        "value": "B",
+        "label": "Equity Arm",
+        "sublabel": "Wealth Building"
+      },
+      {
+        "value": "MF",
+        "label": "Focus",
+        "sublabel": "Multifamily"
+      },
+      {
+        "value": "2026",
+        "label": "Year",
+        "sublabel": "Active"
+      }
+    ],
+    "values": [
+      {
+        "title": "Discipline",
+        "description": "Every dollar deployed is underwritten with rigor. We don't chase deals — we structure them to win."
+      },
+      {
+        "title": "Alignment",
+        "description": "Our services arm funds our equity arm. When clients succeed, YGCCC grows. Interests stay aligned at every level."
+      },
+      {
+        "title": "Execution",
+        "description": "From entitlements to stabilization, we deliver. Our reputation is built on projects completed, not pitches made."
+      },
+      {
+        "title": "Long-Term Vision",
+        "description": "We build for compounding returns — wealth that grows over decades, not quarters. Patient capital, permanent equity."
+      }
+    ],
+    "milestones": [
+      {
+        "year": "2024",
+        "event": "YGCCC founded with a dual-arm strategy: services for cash flow, development for equity"
+      },
+      {
+        "year": "2025",
+        "event": "Launched third-party development consulting and entitlement advisory services"
+      },
+      {
+        "year": "2026",
+        "event": "First YGCCC-owned multifamily project enters predevelopment"
+      }
+    ]
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "projects": [
+      {
+        "name": "Vista Multifamily",
+        "location": "Atlanta, GA",
+        "type": "Multifamily Development",
+        "scope": "120 Units — YGCCC Owned",
+        "status": "Coming Soon",
+        "image": ""
+      },
+      {
+        "name": "Greenfield Residences",
+        "location": "Charlotte, NC",
+        "type": "Workforce Housing",
+        "scope": "96 Units — YGCCC Owned",
+        "status": "Coming Soon",
+        "image": ""
+      },
+      {
+        "name": "Meridian Apartments",
+        "location": "Raleigh, NC",
+        "type": "Urban Infill",
+        "scope": "64 Units — YGCCC Owned",
+        "status": "Coming Soon",
+        "image": ""
+      },
+      {
+        "name": "Parkside Mixed-Use",
+        "location": "Nashville, TN",
+        "type": "Architectural Coordination",
+        "scope": "Feasibility & Design Coordination",
+        "status": "Under Construction",
+        "image": ""
+      },
+      {
+        "name": "Harbor District Entitlements",
+        "location": "Savannah, GA",
+        "type": "Entitlement Support",
+        "scope": "Zoning & Permitting Advisory",
+        "status": "Under Construction",
+        "image": ""
+      },
+      {
+        "name": "Lakeview Residences",
+        "location": "Birmingham, AL",
+        "type": "Development Consulting",
+        "scope": "Pro Forma & Feasibility",
+        "status": "Completed",
+        "image": ""
+      }
+    ],
+    "pipeline": {
+      "label": "Development Pipeline",
+      "title": "Growing the Portfolio",
+      "description": "YuDevelopment is actively sourcing new service engagements and identifying markets for YGCCC's next multifamily acquisitions. The golden goose keeps laying."
+    }
+  },
+  "people": {
+    "hero": {
+      "eyebrow": "Our People",
+      "titleLine1": "Small Team.",
+      "titleLine2": "Big Vision.",
+      "description": "YGCCC is built lean and intentional — every person on the team wears multiple hats and drives real outcomes."
+    },
+    "members": [
+      {
+        "name": "George Yu",
+        "title": "Founder & Principal",
+        "bio": "Leads YGCCC's dual-arm strategy — building YuDevelopment's services practice while overseeing predevelopment on owned multifamily projects. Background in architecture, engineering coordination, and real estate development.",
+        "image": ""
+      }
+    ],
+    "culture": {
+      "label": "How We Work",
+      "title": "Lean, Disciplined, Relentless",
+      "description": "YGCCC operates with the intensity of a startup and the discipline of an institutional platform. Every decision is made with long-term equity creation in mind.",
+      "items": [
+        "Services revenue funds equity — no external operating capital needed",
+        "Every engagement builds expertise that feeds the owned portfolio",
+        "Relationships with municipalities, investors, and design teams compound over time",
+        "Lean overhead means more capital deployed into deals"
+      ]
+    }
+  },
+  "invest": {
+    "hero": {
+      "eyebrow": "Investment Opportunities",
+      "titleLine1": "Build Wealth",
+      "titleLine2": "Alongside YGCCC.",
+      "description": "We partner with investors who share our long-term mindset — patient capital deployed into multifamily real estate through a disciplined, operator-led platform."
+    },
+    "advantages": [
+      {
+        "title": "Self-Funding Platform",
+        "description": "Services revenue covers operating costs — investor capital goes directly into deals, not overhead."
+      },
+      {
+        "title": "Operator Alignment",
+        "description": "YGCCC invests alongside its partners in every deal. Our capital is at risk next to yours."
+      },
+      {
+        "title": "Multifamily Focus",
+        "description": "We specialize in one asset class — multifamily housing — and go deep rather than wide."
+      },
+      {
+        "title": "Full-Cycle Control",
+        "description": "From land sourcing through entitlements, design, construction, and operations — we manage the entire lifecycle."
+      }
+    ],
+    "strategies": [
+      {
+        "name": "Development Services Co-Invest",
+        "target": "Revenue Share",
+        "description": "Participate in fee income from YuDevelopment's third-party consulting and coordination engagements.",
+        "risk": "Lower Risk"
+      },
+      {
+        "name": "Multifamily Equity",
+        "target": "Long-Term Hold",
+        "description": "Co-invest in YGCCC-owned multifamily developments. Patient capital deployed into workforce and market-rate housing.",
+        "risk": "Moderate Risk"
+      },
+      {
+        "name": "Ground-Up Development",
+        "target": "Development Returns",
+        "description": "Partner on new construction in supply-constrained markets with strong demand fundamentals and clear entitlement paths.",
+        "risk": "Higher Risk"
+      }
+    ],
+    "machineSteps": [
+      {
+        "n": "1",
+        "label": "Services Generate Revenue",
+        "description": "Third-party consulting, coordination, and advisory engagements produce operating cash flow."
+      },
+      {
+        "n": "2",
+        "label": "Revenue Funds Operations",
+        "description": "Cash flow covers overhead, predevelopment costs, and deal sourcing — no external operating capital needed."
+      },
+      {
+        "n": "3",
+        "label": "Capital Builds Equity",
+        "description": "Investor capital is deployed directly into YGCCC-owned multifamily projects — where long-term wealth compounds."
+      }
+    ]
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contact",
+      "titleLine1": "Let's Start a",
+      "titleLine2": "Conversation.",
+      "description": "Whether you need development services, want to invest alongside YGCCC, or have a project to discuss — we'd love to hear from you."
+    },
+    "info": {
+      "generalEmail": "info@yudevelopment.com",
+      "servicesText": "For architectural coordination, consulting, feasibility analysis, and entitlement support inquiries.",
+      "investmentText": "For investors interested in YGCCC-owned multifamily opportunities and partnership structures."
+    }
+  }
+}

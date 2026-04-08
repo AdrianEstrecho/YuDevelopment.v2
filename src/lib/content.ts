@@ -1,0 +1,219 @@
+import { promises as fs } from "fs";
+import path from "path";
+import { unstable_noStore as noStore } from "next/cache";
+
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | Json[]
+  | { [key: string]: Json };
+
+export interface BrandContent {
+  namePart1: string;
+  namePart2: string;
+  tagline: string;
+  email: string;
+  copyright: string;
+}
+
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+export interface NavigationContent {
+  links: NavLink[];
+}
+
+export interface HomeHero {
+  eyebrow: string;
+  titleLine1: string;
+  titleLine2: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+  backgroundImage: string;
+}
+
+export interface HomeArm {
+  label: string;
+  title: string;
+  description: string;
+  items: string[];
+}
+
+export interface CapabilityItem {
+  title: string;
+  description: string;
+}
+
+export interface HomeCapabilities {
+  label: string;
+  title: string;
+  description: string;
+  items: CapabilityItem[];
+}
+
+export interface HomeFeaturedProject {
+  name: string;
+  type: string;
+  units: string;
+  status: string;
+  image: string;
+}
+
+export interface HomeCta {
+  eyebrow: string;
+  title: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+}
+
+export interface HomeContent {
+  hero: HomeHero;
+  armA: HomeArm;
+  armB: HomeArm;
+  capabilities: HomeCapabilities;
+  featuredProjects: HomeFeaturedProject[];
+  cta: HomeCta;
+}
+
+export interface PageHero {
+  eyebrow: string;
+  titleLine1: string;
+  titleLine2: string;
+  description: string;
+}
+
+export interface AboutModel {
+  label: string;
+  title: string;
+  paragraphs: string[];
+}
+
+export interface AboutStat {
+  value: string;
+  label: string;
+  sublabel: string;
+}
+
+export interface AboutValue {
+  title: string;
+  description: string;
+}
+
+export interface AboutMilestone {
+  year: string;
+  event: string;
+}
+
+export interface AboutContent {
+  hero: PageHero;
+  model: AboutModel;
+  stats: AboutStat[];
+  values: AboutValue[];
+  milestones: AboutMilestone[];
+}
+
+export interface PortfolioProject {
+  name: string;
+  location: string;
+  type: string;
+  scope: string;
+  status: string;
+  image: string;
+}
+
+export interface PortfolioPipeline {
+  label: string;
+  title: string;
+  description: string;
+}
+
+export interface PortfolioContent {
+  title: string;
+  projects: PortfolioProject[];
+  pipeline: PortfolioPipeline;
+}
+
+export interface TeamMember {
+  name: string;
+  title: string;
+  bio: string;
+  image: string;
+}
+
+export interface PeopleCulture {
+  label: string;
+  title: string;
+  description: string;
+  items: string[];
+}
+
+export interface PeopleContent {
+  hero: PageHero;
+  members: TeamMember[];
+  culture: PeopleCulture;
+}
+
+export interface InvestAdvantage {
+  title: string;
+  description: string;
+}
+
+export interface InvestStrategy {
+  name: string;
+  target: string;
+  description: string;
+  risk: string;
+}
+
+export interface InvestMachineStep {
+  n: string;
+  label: string;
+  description: string;
+}
+
+export interface InvestContent {
+  hero: PageHero;
+  advantages: InvestAdvantage[];
+  strategies: InvestStrategy[];
+  machineSteps: InvestMachineStep[];
+}
+
+export interface ContactInfo {
+  generalEmail: string;
+  servicesText: string;
+  investmentText: string;
+}
+
+export interface ContactContent {
+  hero: PageHero;
+  info: ContactInfo;
+}
+
+export interface SiteContent {
+  brand: BrandContent;
+  navigation: NavigationContent;
+  home: HomeContent;
+  about: AboutContent;
+  portfolio: PortfolioContent;
+  people: PeopleContent;
+  invest: InvestContent;
+  contact: ContactContent;
+}
+
+const contentPath = path.join(process.cwd(), "src/content/site.json");
+
+export async function getContent(): Promise<SiteContent> {
+  noStore();
+  const data = await fs.readFile(contentPath, "utf-8");
+  return JSON.parse(data) as SiteContent;
+}
+
+export async function saveContent(content: unknown): Promise<void> {
+  await fs.writeFile(contentPath, JSON.stringify(content, null, 2), "utf-8");
+}

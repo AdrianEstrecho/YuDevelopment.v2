@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-navy-950: #060d1b;
+  --color-navy-900: #0b1120;
+  --color-navy-800: #111b33;
+  --color-navy-700: #1a2744;
+  --color-navy-600: #243555;
+  --color-navy-500: #334d73;
+  --color-navy-400: #4a6a96;
+  --color-navy-300: #7a9bc4;
+  --color-navy-200: #adc4e0;
+  --color-navy-100: #d6e2f0;
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #e5e5e5;
+  --color-gray-300: #d4d4d4;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #737373;
+  --color-gray-600: #525252;
+  --color-gray-700: #404040;
+  --color-gray-800: #262626;
+  --color-gray-900: #171717;
+  --color-gray-950: #0a0a0a;
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-orbitron);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.animate-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.animate-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #060d1b 0%, #0b1120 30%, #111b33 60%, #0b1120 100%);
+}
+
+.nav-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.admin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-scroll::-webkit-scrollbar-thumb {
+  background: #1a2744;
+  border-radius: 4px;
+}
+.admin-scroll::-webkit-scrollbar-thumb:hover {
+  background: #243555;
 }
