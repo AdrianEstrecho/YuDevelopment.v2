@@ -14,7 +14,11 @@ export default function AdminShortcut() {
     if (typeof window !== "undefined" && window.self !== window.top) return;
 
     const handler = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.altKey && (e.key === "." || e.code === "Period")) {
+      // Primary: Ctrl + Alt + .
+      // Fallback: Ctrl + Shift + . (in case Ctrl+Alt maps to AltGr on Windows)
+      const isCtrlAltDot = e.ctrlKey && e.altKey && (e.key === "." || e.code === "Period");
+      const isCtrlShiftDot = e.ctrlKey && e.shiftKey && (e.key === "." || e.code === "Period" || e.key === ">");
+      if (isCtrlAltDot || isCtrlShiftDot) {
         e.preventDefault();
         router.push("/studio");
       }
