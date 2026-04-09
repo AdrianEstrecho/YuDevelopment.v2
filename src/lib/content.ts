@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { unstable_noStore as noStore } from "next/cache";
-import { client } from "../../sanity/lib/client";
+import { sanityClient } from "./sanity";
 
 export type Json =
   | string
@@ -207,140 +207,40 @@ export interface SiteContent {
   contact: ContactContent;
 }
 
-// ── GROQ queries ────────────────────────────────────────────────────────
-// Each query projects image references → plain URLs so the page can render
-// either Sanity-uploaded images or fallback URLs/paths uniformly.
+const SANITY_DOC_ID = "siteContent";
 
-const BRAND_QUERY = `*[_type == "brand"][0]{ namePart1, namePart2, tagline, email, copyright }`;
+const contentPath = path.join(process.cwd(), "src/content/site.json");
 
-const NAVIGATION_QUERY = `*[_type == "navigation"][0]{ links[]{ href, label } }`;
-
-const HOME_QUERY = `*[_type == "home"][0]{
-  hero{
-    eyebrow, titleLine1, titleLine2, description, primaryCta, secondaryCta,
-    "backgroundImage": backgroundImage.asset->url
-  },
-  armA{ label, title, description, items },
-  armB{ label, title, description, items },
-  capabilities{
-    label, title, description,
-    items[]{ title, description }
-  },
-  featuredProjects[]{
-    name, type, units, status,
-    "image": image.asset->url
-  },
-  cta{ eyebrow, title, description, primaryCta, secondaryCta }
-}`;
-
-const ABOUT_QUERY = `*[_type == "about"][0]{
-  hero{ eyebrow, titleLine1, titleLine2, description },
-  model{ label, title, paragraphs },
-  stats[]{ value, label, sublabel },
-  values[]{ title, description },
-  milestones[]{ year, event }
-}`;
-
-const PORTFOLIO_QUERY = `*[_type == "portfolio"][0]{
-  title,
-  projects[]{
-    name, location, type, scope, status,
-    "image": image.asset->url
-  },
-  pipeline{ label, title, description }
-}`;
-
-const PEOPLE_QUERY = `*[_type == "people"][0]{
-  hero{ eyebrow, titleLine1, titleLine2, description },
-  members[]{
-    name, title, bio,
-    "image": image.asset->url
-  },
-  culture{ label, title, description, items }
-}`;
-
-const INVEST_QUERY = `*[_type == "invest"][0]{
-  hero{ eyebrow, titleLine1, titleLine2, description },
-  advantages[]{ title, description },
-  strategies[]{ name, target, description, risk },
-  machineSteps[]{ n, label, description }
-}`;
-
-const CONTACT_QUERY = `*[_type == "contact"][0]{
-  hero{ eyebrow, titleLine1, titleLine2, description },
-  info{ generalEmail, servicesText, investmentText }
-}`;
-
-// ── Fallback ────────────────────────────────────────────────────────────
-// If Sanity returns null/empty for a section (because the editor hasn't
-// created it yet) we fall back to the seed content in src/content/site.json.
-// This keeps the site rendering even before the user populates Sanity.
-
-const FALLBACK_PATH = path.join(process.cwd(), "src/content/site.json");
-
-async function getFallback(): Promise<SiteContent> {
-  const data = await fs.readFile(FALLBACK_PATH, "utf-8");
+/** Read content from local JSON file (fallback) */
+async function getLocalContent(): Promise<SiteContent> {
+  const data = await fs.readFile(contentPath, "utf-8");
   return JSON.parse(data) as SiteContent;
 }
 
-/**
- * Deep-merges Sanity content with fallback content.
- * - For null/undefined values, uses the fallback.
- * - For arrays/primitives, uses Sanity if defined.
- * - For nested objects, recurses.
- */
-function deepMerge<T>(sanity: unknown, fallback: T): T {
-  if (sanity === null || sanity === undefined) return fallback;
-  if (typeof sanity !== "object" || Array.isArray(sanity)) return sanity as T;
-  if (typeof fallback !== "object" || fallback === null || Array.isArray(fallback)) {
-    return sanity as T;
-  }
-
-  const result: Record<string, unknown> = {};
-  const sanityObj = sanity as Record<string, unknown>;
-  const fallbackObj = fallback as Record<string, unknown>;
-  const keys = new Set([...Object.keys(sanityObj), ...Object.keys(fallbackObj)]);
-  for (const key of keys) {
-    result[key] = deepMerge(sanityObj[key], fallbackObj[key]);
-  }
-  return result as T;
+/** Strip Sanity internal fields (_id, _type, _rev, _createdAt, _updatedAt) */
+function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
+  const { _id, _type, _rev, _createdAt, _updatedAt, ...content } = doc;
+  return content as unknown as SiteContent;
 }
 
 export async function getContent(): Promise<SiteContent> {
   noStore();
-
-  const fallback = await getFallback();
-
-  // If the Sanity client couldn't be created (missing/invalid env vars),
-  // skip the network call and just use the fallback content.
-  if (!client) {
-    return fallback;
-  }
-
   try {
-    const [brand, navigation, home, about, portfolio, people, invest, contact] = await Promise.all([
-      client.fetch(BRAND_QUERY),
-      client.fetch(NAVIGATION_QUERY),
-      client.fetch(HOME_QUERY),
-      client.fetch(ABOUT_QUERY),
-      client.fetch(PORTFOLIO_QUERY),
-      client.fetch(PEOPLE_QUERY),
-      client.fetch(INVEST_QUERY),
-      client.fetch(CONTACT_QUERY),
-    ]);
-
-    return {
-      brand: deepMerge(brand, fallback.brand),
-      navigation: deepMerge(navigation, fallback.navigation),
-      home: deepMerge(home, fallback.home),
-      about: deepMerge(about, fallback.about),
-      portfolio: deepMerge(portfolio, fallback.portfolio),
-      people: deepMerge(people, fallback.people),
-      invest: deepMerge(invest, fallback.invest),
-      contact: deepMerge(contact, fallback.contact),
-    };
-  } catch (err) {
-    console.error("[content] Sanity fetch failed, using fallback content:", err);
-    return fallback;
+    const doc = await sanityClient.fetch(
+      `*[_id == $id][0]`,
+      { id: SANITY_DOC_ID }
+    );
+    if (doc) return stripSanityMeta(doc);
+  } catch {
+    // Sanity unavailable — fall through to local
   }
+  return getLocalContent();
+}
+
+export async function saveContent(content: unknown): Promise<void> {
+  await sanityClient.createOrReplace({
+    _id: SANITY_DOC_ID,
+    _type: "siteContent",
+    ...(content as Record<string, unknown>),
+  });
 }

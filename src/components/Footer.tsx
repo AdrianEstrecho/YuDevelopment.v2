@@ -79,7 +79,6 @@ export default function Footer({ brand, navigation }: FooterProps) {
           <div className="flex gap-6 text-xs text-gray-600">
             <a href="#" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-gray-400 transition-colors">Terms of Service</a>
-            <Link href="/studio" className="hover:text-gray-400 transition-colors">Studio</Link>
           </div>
         </div>
       </div>
