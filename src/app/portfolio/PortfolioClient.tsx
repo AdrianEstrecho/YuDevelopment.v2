@@ -75,7 +75,7 @@ export default function PortfolioClient({ content }: Props) {
       <section className="bg-white px-6 lg:px-8 py-8">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal delay={0.15}>
-            <PortfolioMap />
+            <PortfolioMap projects={content.projects} />
           </ScrollReveal>
         </div>
       </section>

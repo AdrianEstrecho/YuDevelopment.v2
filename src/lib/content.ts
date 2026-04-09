@@ -126,6 +126,8 @@ export interface PortfolioProject {
   scope: string;
   status: string;
   image: string;
+  coordinates: [number, number];
+  projectType: string;
 }
 
 export interface PortfolioPipeline {

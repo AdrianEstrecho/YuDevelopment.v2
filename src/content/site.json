@@ -207,7 +207,9 @@
         "type": "Multifamily Development",
         "scope": "120 Units — YGCCC Owned",
         "status": "Coming Soon",
-        "image": ""
+        "image": "",
+        "coordinates": [-84.388, 33.749],
+        "projectType": "owned"
       },
       {
         "name": "Greenfield Residences",
@@ -215,7 +217,9 @@
         "type": "Workforce Housing",
         "scope": "96 Units — YGCCC Owned",
         "status": "Coming Soon",
-        "image": ""
+        "image": "",
+        "coordinates": [-80.8431, 35.2271],
+        "projectType": "owned"
       },
       {
         "name": "Meridian Apartments",
@@ -223,7 +227,9 @@
         "type": "Urban Infill",
         "scope": "64 Units — YGCCC Owned",
         "status": "Coming Soon",
-        "image": ""
+        "image": "",
+        "coordinates": [-78.6382, 35.7796],
+        "projectType": "owned"
       },
       {
         "name": "Parkside Mixed-Use",
@@ -231,7 +237,9 @@
         "type": "Architectural Coordination",
         "scope": "Feasibility & Design Coordination",
         "status": "Under Construction",
-        "image": ""
+        "image": "",
+        "coordinates": [-86.7816, 36.1627],
+        "projectType": "services"
       },
       {
         "name": "Harbor District Entitlements",
@@ -239,7 +247,9 @@
         "type": "Entitlement Support",
         "scope": "Zoning & Permitting Advisory",
         "status": "Under Construction",
-        "image": ""
+        "image": "",
+        "coordinates": [-81.0998, 32.0809],
+        "projectType": "services"
       },
       {
         "name": "Lakeview Residences",
@@ -247,7 +257,9 @@
         "type": "Development Consulting",
         "scope": "Pro Forma & Feasibility",
         "status": "Completed",
-        "image": ""
+        "image": "",
+        "coordinates": [-86.8025, 33.5207],
+        "projectType": "services"
       }
     ],
     "pipeline": {

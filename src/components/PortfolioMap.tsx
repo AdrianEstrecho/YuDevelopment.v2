@@ -3,61 +3,13 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import type { PortfolioProject } from "@/lib/content";
 
-interface Project {
-  name: string;
-  location: string;
-  coordinates: [number, number];
-  status: string;
-  type: string;
+interface Props {
+  projects: PortfolioProject[];
 }
 
-const projects: Project[] = [
-  {
-    name: "Vista Multifamily",
-    location: "Atlanta, GA",
-    coordinates: [-84.388, 33.749],
-    status: "Pre-Development",
-    type: "owned",
-  },
-  {
-    name: "Greenfield Residences",
-    location: "Charlotte, NC",
-    coordinates: [-80.8431, 35.2271],
-    status: "Coming Soon",
-    type: "owned",
-  },
-  {
-    name: "Meridian Apartments",
-    location: "Raleigh, NC",
-    coordinates: [-78.6382, 35.7796],
-    status: "Coming Soon",
-    type: "owned",
-  },
-  {
-    name: "Parkside Mixed-Use",
-    location: "Nashville, TN",
-    coordinates: [-86.7816, 36.1627],
-    status: "Under Construction",
-    type: "services",
-  },
-  {
-    name: "Harbor District Entitlements",
-    location: "Savannah, GA",
-    coordinates: [-81.0998, 32.0809],
-    status: "Under Construction",
-    type: "services",
-  },
-  {
-    name: "Lakeview Residences",
-    location: "Birmingham, AL",
-    coordinates: [-86.8025, 33.5207],
-    status: "Completed",
-    type: "services",
-  },
-];
-
-export default function PortfolioMap() {
+export default function PortfolioMap({ projects }: Props) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
 
@@ -69,18 +21,31 @@ export default function PortfolioMap() {
 
     mapboxgl.accessToken = token;
 
+    // Only use projects that have coordinates
+    const mappable = projects.filter(
+      (p) => p.coordinates && p.coordinates[0] !== 0 && p.coordinates[1] !== 0
+    );
+
+    // Calculate center from project coordinates, fallback to SE US
+    let center: [number, number] = [-85.5, 33.5];
+    if (mappable.length > 0) {
+      const avgLng = mappable.reduce((s, p) => s + p.coordinates[0], 0) / mappable.length;
+      const avgLat = mappable.reduce((s, p) => s + p.coordinates[1], 0) / mappable.length;
+      center = [avgLng, avgLat];
+    }
+
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/satellite-streets-v12",
-      center: [-85.5, 33.5],
+      center,
       zoom: 5.2,
       attributionControl: true,
     });
 
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
 
-    projects.forEach((project) => {
-      const color = project.type === "owned" ? "#4a6af5" : "#e0a830";
+    mappable.forEach((project) => {
+      const color = project.projectType === "owned" ? "#4a6af5" : "#e0a830";
 
       const el = document.createElement("div");
       el.style.width = "28px";
@@ -112,7 +77,7 @@ export default function PortfolioMap() {
     return () => {
       map.current?.remove();
     };
-  }, []);
+  }, [projects]);
 
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 

@@ -208,6 +208,25 @@ function Field({ path, value, parentKey, onChange }: FieldProps) {
     );
   }
 
+  if (typeof value === "string" && parentKey === "status") {
+    const statusOptions = ["Coming Soon", "Under Construction", "Completed"];
+    return (
+      <div className="mb-5">
+        <Label>{label}</Label>
+        <select
+          value={value}
+          onChange={(e) => onChange(path, e.target.value)}
+          className="w-full px-3 py-2.5 bg-[#06101f] border border-navy-800 rounded text-white text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+        >
+          {!statusOptions.includes(value) && <option value={value}>{value || "— Select —"}</option>}
+          {statusOptions.map((opt) => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+
   if (typeof value === "string") {
     return (
       <div className="mb-5">
