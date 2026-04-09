@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { isAuthenticated } from "@/lib/auth";
-import { sanityClient } from "@/lib/sanity";
+import { getSanityClient } from "@/lib/sanity";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +19,7 @@ export async function POST() {
     const raw = await fs.readFile(filePath, "utf-8");
     const content = JSON.parse(raw);
 
-    await sanityClient.createOrReplace({
+    await getSanityClient().createOrReplace({
       _id: "siteContent",
       _type: "siteContent",
       ...content,

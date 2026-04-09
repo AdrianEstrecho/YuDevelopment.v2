@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthenticated } from "@/lib/auth";
-import { sanityClient } from "@/lib/sanity";
+import { getSanityClient } from "@/lib/sanity";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const asset = await sanityClient.assets.upload("image", buffer, {
+    const asset = await getSanityClient().assets.upload("image", buffer, {
       filename: file.name,
       contentType: file.type,
     });

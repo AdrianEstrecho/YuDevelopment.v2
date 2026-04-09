@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { unstable_noStore as noStore } from "next/cache";
-import { sanityClient } from "./sanity";
+import { getSanityClient } from "./sanity";
 
 export type Json =
   | string
@@ -226,7 +226,7 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
 export async function getContent(): Promise<SiteContent> {
   noStore();
   try {
-    const doc = await sanityClient.fetch(
+    const doc = await getSanityClient().fetch(
       `*[_id == $id][0]`,
       { id: SANITY_DOC_ID }
     );
@@ -238,7 +238,7 @@ export async function getContent(): Promise<SiteContent> {
 }
 
 export async function saveContent(content: unknown): Promise<void> {
-  await sanityClient.createOrReplace({
+  await getSanityClient().createOrReplace({
     _id: SANITY_DOC_ID,
     _type: "siteContent",
     ...(content as Record<string, unknown>),
