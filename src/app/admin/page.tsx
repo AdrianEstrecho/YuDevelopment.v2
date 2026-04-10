@@ -175,6 +175,18 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
   );
 }
 
+function getItemDisplayName(item: Json, fallback: string): string {
+  if (typeof item === "string") return item || fallback;
+  if (typeof item === "number" || typeof item === "boolean") return String(item);
+  if (item && typeof item === "object" && !Array.isArray(item)) {
+    const obj = item as Record<string, Json>;
+    for (const key of ["name", "title", "label", "heading"]) {
+      if (typeof obj[key] === "string" && obj[key]) return obj[key] as string;
+    }
+  }
+  return fallback;
+}
+
 function SortableArray({
   path,
   value,
@@ -188,6 +200,7 @@ function SortableArray({
 }) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const template = value.length > 0 ? cloneTemplate(value[0]) : "";
   const itemLabel = singularize(parentKey).toUpperCase().replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
@@ -215,6 +228,13 @@ function SortableArray({
       const [moved] = reordered.splice(dragIndex, 1);
       reordered.splice(dropIndex, 0, moved);
       onChange(path, reordered);
+      // Update expanded index to follow the item
+      if (expandedIndex === dragIndex) setExpandedIndex(dropIndex);
+      else if (expandedIndex !== null) {
+        // Adjust if the expanded item shifted
+        if (dragIndex < expandedIndex && dropIndex >= expandedIndex) setExpandedIndex(expandedIndex - 1);
+        else if (dragIndex > expandedIndex && dropIndex <= expandedIndex) setExpandedIndex(expandedIndex + 1);
+      }
     }
     setDragIndex(null);
     setDragOverIndex(null);
@@ -225,13 +245,18 @@ function SortableArray({
     setDragOverIndex(null);
   };
 
+  const isObjectArray = value.length > 0 && value[0] !== null && typeof value[0] === "object" && !Array.isArray(value[0]);
+
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-3">
         <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">{sectionLabel}</p>
         <button
           type="button"
-          onClick={() => onChange(path, [...value, template])}
+          onClick={() => {
+            onChange(path, [...value, template]);
+            setExpandedIndex(value.length);
+          }}
           className="text-[10px] font-bold uppercase tracking-wider text-blue-400 hover:text-blue-300"
         >
           + Add
@@ -240,63 +265,107 @@ function SortableArray({
       {value.length === 0 && (
         <p className="text-xs text-navy-500 italic mb-2">No items yet — click Add to create one.</p>
       )}
-      <div className="space-y-3">
-        {value.map((item, i) => (
-          <div
-            key={i}
-            draggable
-            onDragStart={(e) => handleDragStart(e, i)}
-            onDragOver={(e) => handleDragOver(e, i)}
-            onDragLeave={handleDragLeave}
-            onDrop={(e) => handleDrop(e, i)}
-            onDragEnd={handleDragEnd}
-            className={`bg-[#0a1426] border rounded-lg p-4 transition-all ${
-              dragIndex === i
-                ? "opacity-40 border-navy-800"
-                : dragOverIndex === i
-                  ? "border-blue-500 ring-1 ring-blue-500/30"
-                  : "border-navy-800"
-            }`}
-          >
-            <div className="flex items-center justify-between mb-3 pb-3 border-b border-navy-800/70">
-              <div className="flex items-center gap-2">
-                <span
-                  className="cursor-grab active:cursor-grabbing text-navy-500 hover:text-navy-300 select-none"
-                  title="Drag to reorder"
-                >
-                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                    <circle cx="5" cy="3" r="1.5" />
-                    <circle cx="11" cy="3" r="1.5" />
-                    <circle cx="5" cy="8" r="1.5" />
-                    <circle cx="11" cy="8" r="1.5" />
-                    <circle cx="5" cy="13" r="1.5" />
-                    <circle cx="11" cy="13" r="1.5" />
-                  </svg>
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">
-                  {itemLabel} {i + 1}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => onChange(path, value.filter((_, idx) => idx !== i))}
-                className="text-[10px] font-medium text-red-400/90 hover:text-red-300 flex items-center gap-1"
+      <div className="space-y-2">
+        {value.map((item, i) => {
+          const isExpanded = expandedIndex === i;
+          const displayName = getItemDisplayName(item, `${itemLabel} ${i + 1}`);
+
+          return (
+            <div
+              key={i}
+              draggable
+              onDragStart={(e) => handleDragStart(e, i)}
+              onDragOver={(e) => handleDragOver(e, i)}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, i)}
+              onDragEnd={handleDragEnd}
+              className={`bg-[#0a1426] border rounded-lg transition-all ${
+                dragIndex === i
+                  ? "opacity-40 border-navy-800"
+                  : dragOverIndex === i
+                    ? "border-blue-500 ring-1 ring-blue-500/30"
+                    : "border-navy-800"
+              }`}
+            >
+              {/* Collapsed header — always visible */}
+              <div
+                className={`flex items-center justify-between px-4 py-3 cursor-pointer select-none ${
+                  isExpanded ? "border-b border-navy-800/70" : ""
+                }`}
+                onClick={() => setExpandedIndex(isExpanded ? null : i)}
               >
-                <span>✕</span> Remove
-              </button>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span
+                    className="cursor-grab active:cursor-grabbing text-navy-500 hover:text-navy-300 flex-shrink-0"
+                    title="Drag to reorder"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                      <circle cx="5" cy="3" r="1.5" />
+                      <circle cx="11" cy="3" r="1.5" />
+                      <circle cx="5" cy="8" r="1.5" />
+                      <circle cx="11" cy="8" r="1.5" />
+                      <circle cx="5" cy="13" r="1.5" />
+                      <circle cx="11" cy="13" r="1.5" />
+                    </svg>
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-500 flex-shrink-0">
+                    {i + 1}
+                  </span>
+                  {isObjectArray ? (
+                    <span className="text-sm font-medium text-white truncate">{displayName}</span>
+                  ) : (
+                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">
+                      {itemLabel} {i + 1}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (expandedIndex === i) setExpandedIndex(null);
+                      else if (expandedIndex !== null && expandedIndex > i) setExpandedIndex(expandedIndex - 1);
+                      onChange(path, value.filter((_, idx) => idx !== i));
+                    }}
+                    className="text-[10px] font-medium text-red-400/90 hover:text-red-300 flex items-center gap-1"
+                  >
+                    <span>✕</span> Remove
+                  </button>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className={`text-navy-500 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                  >
+                    <path d="M3 4.5L6 7.5L9 4.5" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Expanded editor */}
+              {isExpanded && (
+                <div className="px-4 py-4">
+                  {typeof item === "string" || typeof item === "number" || typeof item === "boolean" ? (
+                    <Field
+                      path={[...path, i]}
+                      value={item}
+                      parentKey={singularize(parentKey)}
+                      onChange={onChange}
+                    />
+                  ) : (
+                    <ObjectFields path={[...path, i]} value={item} onChange={onChange} />
+                  )}
+                </div>
+              )}
             </div>
-            {typeof item === "string" || typeof item === "number" || typeof item === "boolean" ? (
-              <Field
-                path={[...path, i]}
-                value={item}
-                parentKey={singularize(parentKey)}
-                onChange={onChange}
-              />
-            ) : (
-              <ObjectFields path={[...path, i]} value={item} onChange={onChange} />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
