@@ -119,22 +119,13 @@ export interface AboutContent {
   milestones: AboutMilestone[];
 }
 
-export interface TimelineEntry {
-  label: string;
-  date: string;
-}
-
 export interface PortfolioProject {
   name: string;
-  slug: string;
   location: string;
   type: string;
   scope: string;
   status: string;
-  description: string;
   image: string;
-  gallery: string[];
-  timeline: TimelineEntry[];
   coordinates: [number, number];
   projectType: string;
 }
@@ -234,23 +225,6 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
   return content as unknown as SiteContent;
 }
 
-/** Ensure every project has all required fields, filter out empty entries */
-function normalizeProjects(content: SiteContent): SiteContent {
-  if (!content.portfolio?.projects) return content;
-  content.portfolio.projects = content.portfolio.projects
-    .filter((p) => p.name && p.name.trim() !== "")
-    .map((p) => ({
-      ...p,
-      slug: p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-      description: p.description || "",
-      gallery: p.gallery || [],
-      timeline: p.timeline || [],
-      coordinates: p.coordinates || [0, 0],
-      projectType: p.projectType || "services",
-    }));
-  return content;
-}
-
 export async function getContent(): Promise<SiteContent> {
   noStore();
   try {
@@ -258,11 +232,11 @@ export async function getContent(): Promise<SiteContent> {
       `*[_id == $id][0]`,
       { id: SANITY_DOC_ID }
     );
-    if (doc) return normalizeProjects(stripSanityMeta(doc));
+    if (doc) return stripSanityMeta(doc);
   } catch {
     // Sanity unavailable — fall through to local
   }
-  return normalizeProjects(await getLocalContent());
+  return getLocalContent();
 }
 
 export async function saveContent(content: unknown): Promise<void> {

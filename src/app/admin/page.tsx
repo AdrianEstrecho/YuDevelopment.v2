@@ -31,7 +31,7 @@ const TABS: Tab[] = [
   { key: "contact", label: "Contact", icon: "✉️", description: "Contact page hero and inquiry copy.", path: ["contact"], target: "/contact" },
 ];
 
-const IMAGE_KEYS = new Set(["image", "photo", "avatar", "logo", "backgroundImage", "background", "gallery"]);
+const IMAGE_KEYS = new Set(["image", "photo", "avatar", "logo", "backgroundImage", "background"]);
 
 function isImageKey(key: string) {
   if (IMAGE_KEYS.has(key)) return true;
