@@ -98,10 +98,10 @@ export default function PortfolioClient({ content }: Props) {
                         <span
                           className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-widest rounded-full ${
                             project.status === "Completed"
-                              ? "bg-white/90 text-gray-900"
+                              ? "bg-green-600/90 text-white"
                               : project.status === "Under Construction"
-                              ? "bg-gray-900/80 text-white"
-                              : "bg-gray-600/80 text-white"
+                              ? "bg-orange-500/90 text-white"
+                              : "bg-blue-500/90 text-white"
                           }`}
                         >
                           {project.status}
