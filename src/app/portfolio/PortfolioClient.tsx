@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import PortfolioMap from "@/components/PortfolioMap";
 import type { PortfolioContent } from "@/lib/content";
@@ -87,7 +88,7 @@ export default function PortfolioClient({ content }: Props) {
               const gradient = gradients[i % gradients.length];
               return (
                 <ScrollReveal key={project.name} delay={i * 0.05}>
-                  <div className="group cursor-pointer">
+                  <Link href={`/portfolio/${project.slug}`} className="group block">
                     <div className={`aspect-[4/3] bg-gradient-to-br ${gradient} rounded-lg overflow-hidden relative border border-gray-200`}>
                       {project.image && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -117,7 +118,7 @@ export default function PortfolioClient({ content }: Props) {
                       <span>&middot;</span>
                       <span>{project.scope}</span>
                     </div>
-                  </div>
+                  </Link>
                 </ScrollReveal>
               );
             })}
