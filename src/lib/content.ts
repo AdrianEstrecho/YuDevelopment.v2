@@ -234,6 +234,19 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
   return content as unknown as SiteContent;
 }
 
+/** Ensure every project has slug, description, gallery, and timeline */
+function normalizeProjects(content: SiteContent): SiteContent {
+  if (!content.portfolio?.projects) return content;
+  content.portfolio.projects = content.portfolio.projects.map((p) => ({
+    ...p,
+    slug: p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    description: p.description || "",
+    gallery: p.gallery || [],
+    timeline: p.timeline || [],
+  }));
+  return content;
+}
+
 export async function getContent(): Promise<SiteContent> {
   noStore();
   try {
@@ -241,11 +254,11 @@ export async function getContent(): Promise<SiteContent> {
       `*[_id == $id][0]`,
       { id: SANITY_DOC_ID }
     );
-    if (doc) return stripSanityMeta(doc);
+    if (doc) return normalizeProjects(stripSanityMeta(doc));
   } catch {
     // Sanity unavailable — fall through to local
   }
-  return getLocalContent();
+  return normalizeProjects(await getLocalContent());
 }
 
 export async function saveContent(content: unknown): Promise<void> {
