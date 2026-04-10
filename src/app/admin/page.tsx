@@ -175,6 +175,133 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
   );
 }
 
+function SortableArray({
+  path,
+  value,
+  parentKey,
+  onChange,
+}: {
+  path: (string | number)[];
+  value: Json[];
+  parentKey: string;
+  onChange: (path: (string | number)[], value: Json) => void;
+}) {
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+
+  const template = value.length > 0 ? cloneTemplate(value[0]) : "";
+  const itemLabel = singularize(parentKey).toUpperCase().replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+  const sectionLabel = humanize(parentKey).toUpperCase();
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDragIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (dragOverIndex !== index) setDragOverIndex(index);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (dragIndex !== null && dragIndex !== dropIndex) {
+      const reordered = [...value];
+      const [moved] = reordered.splice(dragIndex, 1);
+      reordered.splice(dropIndex, 0, moved);
+      onChange(path, reordered);
+    }
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDragEnd = () => {
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+
+  return (
+    <div className="mb-6">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">{sectionLabel}</p>
+        <button
+          type="button"
+          onClick={() => onChange(path, [...value, template])}
+          className="text-[10px] font-bold uppercase tracking-wider text-blue-400 hover:text-blue-300"
+        >
+          + Add
+        </button>
+      </div>
+      {value.length === 0 && (
+        <p className="text-xs text-navy-500 italic mb-2">No items yet — click Add to create one.</p>
+      )}
+      <div className="space-y-3">
+        {value.map((item, i) => (
+          <div
+            key={i}
+            draggable
+            onDragStart={(e) => handleDragStart(e, i)}
+            onDragOver={(e) => handleDragOver(e, i)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, i)}
+            onDragEnd={handleDragEnd}
+            className={`bg-[#0a1426] border rounded-lg p-4 transition-all ${
+              dragIndex === i
+                ? "opacity-40 border-navy-800"
+                : dragOverIndex === i
+                  ? "border-blue-500 ring-1 ring-blue-500/30"
+                  : "border-navy-800"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-3 pb-3 border-b border-navy-800/70">
+              <div className="flex items-center gap-2">
+                <span
+                  className="cursor-grab active:cursor-grabbing text-navy-500 hover:text-navy-300 select-none"
+                  title="Drag to reorder"
+                >
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <circle cx="5" cy="3" r="1.5" />
+                    <circle cx="11" cy="3" r="1.5" />
+                    <circle cx="5" cy="8" r="1.5" />
+                    <circle cx="11" cy="8" r="1.5" />
+                    <circle cx="5" cy="13" r="1.5" />
+                    <circle cx="11" cy="13" r="1.5" />
+                  </svg>
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">
+                  {itemLabel} {i + 1}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => onChange(path, value.filter((_, idx) => idx !== i))}
+                className="text-[10px] font-medium text-red-400/90 hover:text-red-300 flex items-center gap-1"
+              >
+                <span>✕</span> Remove
+              </button>
+            </div>
+            {typeof item === "string" || typeof item === "number" || typeof item === "boolean" ? (
+              <Field
+                path={[...path, i]}
+                value={item}
+                parentKey={singularize(parentKey)}
+                onChange={onChange}
+              />
+            ) : (
+              <ObjectFields path={[...path, i]} value={item} onChange={onChange} />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 interface FieldProps {
   path: (string | number)[];
   value: Json;
@@ -256,53 +383,8 @@ function Field({ path, value, parentKey, onChange }: FieldProps) {
   }
 
   if (Array.isArray(value)) {
-    const template = value.length > 0 ? cloneTemplate(value[0]) : "";
-    const itemLabel = singularize(parentKey).toUpperCase().replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
-    const sectionLabel = label.toUpperCase();
     return (
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">{sectionLabel}</p>
-          <button
-            type="button"
-            onClick={() => onChange(path, [...value, template])}
-            className="text-[10px] font-bold uppercase tracking-wider text-blue-400 hover:text-blue-300"
-          >
-            + Add
-          </button>
-        </div>
-        {value.length === 0 && (
-          <p className="text-xs text-navy-500 italic mb-2">No items yet — click Add to create one.</p>
-        )}
-        <div className="space-y-3">
-          {value.map((item, i) => (
-            <div key={i} className="bg-[#0a1426] border border-navy-800 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3 pb-3 border-b border-navy-800/70">
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-navy-300">
-                  {itemLabel} {i + 1}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onChange(path, value.filter((_, idx) => idx !== i))}
-                  className="text-[10px] font-medium text-red-400/90 hover:text-red-300 flex items-center gap-1"
-                >
-                  <span>✕</span> Remove
-                </button>
-              </div>
-              {typeof item === "string" || typeof item === "number" || typeof item === "boolean" ? (
-                <Field
-                  path={[...path, i]}
-                  value={item}
-                  parentKey={singularize(parentKey)}
-                  onChange={onChange}
-                />
-              ) : (
-                <ObjectFields path={[...path, i]} value={item} onChange={onChange} />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      <SortableArray path={path} value={value} parentKey={parentKey} onChange={onChange} />
     );
   }
 
