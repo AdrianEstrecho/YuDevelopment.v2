@@ -119,13 +119,22 @@ export interface AboutContent {
   milestones: AboutMilestone[];
 }
 
+export interface TimelineEntry {
+  label: string;
+  date: string;
+}
+
 export interface PortfolioProject {
   name: string;
+  slug: string;
   location: string;
   type: string;
   scope: string;
   status: string;
+  description: string;
   image: string;
+  gallery: string[];
+  timeline: TimelineEntry[];
   coordinates: [number, number];
   projectType: string;
 }

@@ -203,61 +203,109 @@
     "projects": [
       {
         "name": "Vista Multifamily",
+        "slug": "vista-multifamily",
         "location": "Atlanta, GA",
         "type": "Multifamily Development",
         "scope": "120 Units — YGCCC Owned",
         "status": "Coming Soon",
+        "description": "A 120-unit multifamily development in Atlanta's growing eastside corridor. This YGCCC-owned project targets workforce housing with modern amenities and transit-oriented design.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Acquisition", "date": "Q3 2026" },
+          { "label": "Construction Start", "date": "Q1 2027" },
+          { "label": "Completion", "date": "Q4 2028" }
+        ],
         "coordinates": [-84.388, 33.749],
         "projectType": "owned"
       },
       {
         "name": "Greenfield Residences",
+        "slug": "greenfield-residences",
         "location": "Charlotte, NC",
         "type": "Workforce Housing",
         "scope": "96 Units — YGCCC Owned",
         "status": "Coming Soon",
+        "description": "A 96-unit workforce housing community in Charlotte's emerging NoDa district. Designed to deliver attainable living with high-quality finishes and community-centered amenities.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Site Selection", "date": "Q2 2026" },
+          { "label": "Entitlements", "date": "Q4 2026" },
+          { "label": "Construction Start", "date": "Q2 2027" }
+        ],
         "coordinates": [-80.8431, 35.2271],
         "projectType": "owned"
       },
       {
         "name": "Meridian Apartments",
+        "slug": "meridian-apartments",
         "location": "Raleigh, NC",
         "type": "Urban Infill",
         "scope": "64 Units — YGCCC Owned",
         "status": "Coming Soon",
+        "description": "A 64-unit urban infill project in downtown Raleigh. This compact, transit-adjacent development maximizes density while contributing to neighborhood revitalization.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Due Diligence", "date": "Q3 2026" },
+          { "label": "Design", "date": "Q1 2027" },
+          { "label": "Completion", "date": "Q3 2028" }
+        ],
         "coordinates": [-78.6382, 35.7796],
         "projectType": "owned"
       },
       {
         "name": "Parkside Mixed-Use",
+        "slug": "parkside-mixed-use",
         "location": "Nashville, TN",
         "type": "Architectural Coordination",
         "scope": "Feasibility & Design Coordination",
         "status": "Under Construction",
+        "description": "Providing architectural coordination and design management for a mixed-use development in Nashville's Gulch district. Services include feasibility analysis, design team coordination, and construction oversight.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Engagement Start", "date": "Q1 2026" },
+          { "label": "Design Complete", "date": "Q3 2026" },
+          { "label": "Construction", "date": "Q4 2026" }
+        ],
         "coordinates": [-86.7816, 36.1627],
         "projectType": "services"
       },
       {
         "name": "Harbor District Entitlements",
+        "slug": "harbor-district-entitlements",
         "location": "Savannah, GA",
         "type": "Entitlement Support",
         "scope": "Zoning & Permitting Advisory",
         "status": "Under Construction",
+        "description": "Leading the entitlement and permitting process for a waterfront mixed-use project in Savannah's historic Harbor District. Navigating complex zoning requirements and community engagement.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Zoning Review", "date": "Q2 2026" },
+          { "label": "Public Hearing", "date": "Q3 2026" },
+          { "label": "Permits Issued", "date": "Q4 2026" }
+        ],
         "coordinates": [-81.0998, 32.0809],
         "projectType": "services"
       },
       {
         "name": "Lakeview Residences",
+        "slug": "lakeview-residences",
         "location": "Birmingham, AL",
         "type": "Development Consulting",
         "scope": "Pro Forma & Feasibility",
         "status": "Completed",
+        "description": "Delivered comprehensive development consulting for a lakefront residential project in Birmingham. Scope included pro forma modeling, feasibility analysis, and capital stack advisory.",
         "image": "",
+        "gallery": [],
+        "timeline": [
+          { "label": "Engagement Start", "date": "Q3 2025" },
+          { "label": "Feasibility Delivered", "date": "Q4 2025" },
+          { "label": "Project Complete", "date": "Q1 2026" }
+        ],
         "coordinates": [-86.8025, 33.5207],
         "projectType": "services"
       }
