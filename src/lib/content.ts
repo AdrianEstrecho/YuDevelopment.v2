@@ -234,16 +234,20 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
   return content as unknown as SiteContent;
 }
 
-/** Ensure every project has slug, description, gallery, and timeline */
+/** Ensure every project has all required fields, filter out empty entries */
 function normalizeProjects(content: SiteContent): SiteContent {
   if (!content.portfolio?.projects) return content;
-  content.portfolio.projects = content.portfolio.projects.map((p) => ({
-    ...p,
-    slug: p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-    description: p.description || "",
-    gallery: p.gallery || [],
-    timeline: p.timeline || [],
-  }));
+  content.portfolio.projects = content.portfolio.projects
+    .filter((p) => p.name && p.name.trim() !== "")
+    .map((p) => ({
+      ...p,
+      slug: p.slug || p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+      description: p.description || "",
+      gallery: p.gallery || [],
+      timeline: p.timeline || [],
+      coordinates: p.coordinates || [0, 0],
+      projectType: p.projectType || "services",
+    }));
   return content;
 }
 
