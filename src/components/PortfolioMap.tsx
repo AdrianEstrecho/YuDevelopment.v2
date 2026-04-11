@@ -21,9 +21,14 @@ export default function PortfolioMap({ projects }: Props) {
 
     mapboxgl.accessToken = token;
 
-    // Only use projects that have coordinates
+    // Only use projects with valid numeric coordinates
     const mappable = projects.filter(
-      (p) => p.coordinates && p.coordinates[0] !== 0 && p.coordinates[1] !== 0
+      (p) =>
+        Array.isArray(p.coordinates) &&
+        p.coordinates.length === 2 &&
+        Number.isFinite(p.coordinates[0]) &&
+        Number.isFinite(p.coordinates[1]) &&
+        (p.coordinates[0] !== 0 || p.coordinates[1] !== 0)
     );
 
     // Calculate center from project coordinates, fallback to SE US

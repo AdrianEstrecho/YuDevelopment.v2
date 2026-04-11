@@ -451,6 +451,56 @@ function Field({ path, value, parentKey, onChange }: FieldProps) {
     );
   }
 
+  if (parentKey === "coordinates") {
+    const arr = Array.isArray(value) ? value : [];
+    const lng = typeof arr[0] === "number" ? arr[0] : "";
+    const lat = typeof arr[1] === "number" ? arr[1] : "";
+    const update = (nextLng: number | "", nextLat: number | "") => {
+      onChange(path, [
+        nextLng === "" ? 0 : nextLng,
+        nextLat === "" ? 0 : nextLat,
+      ]);
+    };
+    return (
+      <div className="mb-5">
+        <Label>Coordinates</Label>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-wider text-navy-400 mb-1">Longitude</p>
+            <input
+              type="number"
+              step="any"
+              value={lng}
+              placeholder="-84.388"
+              onChange={(e) => {
+                const v = e.target.value === "" ? "" : Number(e.target.value);
+                update(v, lat);
+              }}
+              className="w-full px-3 py-2.5 bg-[#06101f] border border-navy-800 rounded text-white text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+            />
+          </div>
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-wider text-navy-400 mb-1">Latitude</p>
+            <input
+              type="number"
+              step="any"
+              value={lat}
+              placeholder="33.749"
+              onChange={(e) => {
+                const v = e.target.value === "" ? "" : Number(e.target.value);
+                update(lng, v);
+              }}
+              className="w-full px-3 py-2.5 bg-[#06101f] border border-navy-800 rounded text-white text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+            />
+          </div>
+        </div>
+        <p className="text-[10px] text-navy-500 mt-2 leading-relaxed">
+          Find on <a href="https://www.google.com/maps" target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">Google Maps</a> — right-click a location to copy lat/long, then paste latitude into the right field and longitude into the left.
+        </p>
+      </div>
+    );
+  }
+
   if (Array.isArray(value)) {
     return (
       <SortableArray path={path} value={value} parentKey={parentKey} onChange={onChange} />
