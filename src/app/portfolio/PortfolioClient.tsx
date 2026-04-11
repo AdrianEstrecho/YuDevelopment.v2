@@ -87,7 +87,7 @@ export default function PortfolioClient({ content }: Props) {
             {filtered.map((project, i) => {
               const gradient = gradients[i % gradients.length];
               return (
-                <ScrollReveal key={project.name} delay={i * 0.05}>
+                <ScrollReveal key={project.slug || project.name || i} delay={i * 0.05}>
                   <Link href={`/portfolio/${project.slug}`} className="group block">
                     <div className={`aspect-[4/3] bg-gradient-to-br ${gradient} rounded-lg overflow-hidden relative border border-gray-200`}>
                       {project.image && (
