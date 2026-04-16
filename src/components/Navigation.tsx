@@ -38,14 +38,13 @@ export default function Navigation({ namePart1, namePart2, links }: NavigationPr
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3">
-            <div
-              className={`text-xl font-bold tracking-tight transition-colors duration-300 ${
-                overHero ? "text-white" : "text-gray-900"
+            <img
+              src="/logo.svg"
+              alt="Logo"
+              className={`h-16 w-auto transition-all duration-300 ${
+                overHero ? "brightness-100" : "brightness-0"
               }`}
-            >
-              <span className="font-sans font-extrabold tracking-wider">{namePart1}</span>
-              <span className="font-sans font-light tracking-wider">{namePart2}</span>
-            </div>
+            />
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
