@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Chakra_Petch } from "next/font/google";
+import { Geist, Chakra_Petch, Orbitron } from "next/font/google";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AdminShortcut from "@/components/AdminShortcut";
@@ -16,6 +16,12 @@ const chakraPetch = Chakra_Petch({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
+});
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +41,7 @@ export default async function RootLayout({
   const content = await getContent();
 
   return (
-    <html lang="en" className={`${geistSans.variable} ${chakraPetch.variable} h-full antialiased`}>
+    <html lang="en" className={`${geistSans.variable} ${chakraPetch.variable} ${orbitron.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Navigation
           namePart1={content.brand.namePart1}

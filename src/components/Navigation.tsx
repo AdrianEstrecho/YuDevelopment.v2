@@ -35,36 +35,51 @@ export default function Navigation({ namePart1, namePart2, links }: NavigationPr
         scrolled || !isHome ? "nav-blur bg-white/95 shadow-sm border-b border-gray-200" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="w-full px-[50px]">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.svg"
-              alt="Logo"
-              className={`h-16 w-auto transition-all duration-300 ${
-                overHero ? "brightness-100" : "brightness-0"
-              }`}
-            />
+          <Link
+            href="/"
+            aria-label="YuDevelopment home"
+            className={`font-orbitron text-lg leading-7 font-extrabold uppercase tracking-[0.3em] transition-colors duration-500 whitespace-nowrap ${
+              overHero ? "text-white" : "text-gray-900"
+            }`}
+          >
+            YuDevelopment
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
-            {links.map((link) => (
+          <nav className="hidden md:flex items-center gap-12">
+            {links.slice(0, -1).map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-normal transition-colors duration-200 ${
+                    active
+                      ? overHero
+                        ? "text-white"
+                        : "text-gray-900"
+                      : overHero
+                        ? "text-gray-200 hover:text-white"
+                        : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            {links.length > 0 && (
               <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-xs font-medium tracking-[0.15em] uppercase transition-colors duration-200 ${
-                  pathname === link.href
-                    ? overHero
-                      ? "text-white"
-                      : "text-gray-900"
-                    : overHero
-                    ? "text-gray-300 hover:text-white"
-                    : "text-gray-500 hover:text-gray-900"
+                href={links[links.length - 1].href}
+                className={`ml-2 inline-flex items-center justify-center rounded-full px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.15em] transition-colors duration-200 ${
+                  overHero
+                    ? "bg-white text-gray-900 hover:bg-gray-200"
+                    : "bg-gray-900 text-white hover:bg-black"
                 }`}
               >
-                {link.label}
+                {links[links.length - 1].label}
               </Link>
-            ))}
+            )}
           </nav>
 
           <button
@@ -85,7 +100,7 @@ export default function Navigation({ namePart1, namePart2, links }: NavigationPr
 
       {mobileOpen && (
         <div className="md:hidden nav-blur bg-white/98 border-t border-gray-200">
-          <nav className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
+          <nav className="w-full px-[50px] py-4 flex flex-col gap-1">
             {links.map((link) => (
               <Link
                 key={link.href}

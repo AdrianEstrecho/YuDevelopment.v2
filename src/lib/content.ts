@@ -28,6 +28,8 @@ export interface NavigationContent {
   links: NavLink[];
 }
 
+export type HeroBackgroundType = "none" | "image" | "video";
+
 export interface HomeHero {
   eyebrow: string;
   titleLine1: string;
@@ -35,7 +37,9 @@ export interface HomeHero {
   description: string;
   primaryCta: string;
   secondaryCta: string;
+  backgroundType: HeroBackgroundType;
   backgroundImage: string;
+  backgroundVideo: string;
 }
 
 export interface HomeArm {
@@ -236,8 +240,28 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
 
 /** Ensure every project has a slug and the newer optional fields */
 function normalizeProjects(content: SiteContent): SiteContent {
+  const heroImg = content.home.hero.backgroundImage ?? "";
+  const heroVid = content.home.hero.backgroundVideo ?? "";
+  const storedType = content.home.hero.backgroundType;
+  const validTypes: HeroBackgroundType[] = ["none", "image", "video"];
+  const inferredType: HeroBackgroundType = heroVid
+    ? "video"
+    : heroImg
+      ? "image"
+      : "none";
+  const backgroundType: HeroBackgroundType =
+    storedType && validTypes.includes(storedType) ? storedType : inferredType;
   return {
     ...content,
+    home: {
+      ...content.home,
+      hero: {
+        ...content.home.hero,
+        backgroundType,
+        backgroundImage: heroImg,
+        backgroundVideo: heroVid,
+      },
+    },
     portfolio: {
       ...content.portfolio,
       projects: content.portfolio.projects.map((p) => ({

@@ -6,6 +6,9 @@ import { getContent } from "@/lib/content";
 export default async function Home() {
   const { home } = await getContent();
   const { hero, armA, armB, capabilities, featuredProjects, cta } = home;
+  const showVideo = hero.backgroundType === "video" && !!hero.backgroundVideo;
+  const showImage = hero.backgroundType === "image" && !!hero.backgroundImage;
+  const hasMedia = showVideo || showImage;
 
   return (
     <>
@@ -13,10 +16,10 @@ export default async function Home() {
       <section
         id="hero"
         className={`relative min-h-screen flex items-center justify-center overflow-hidden scroll-mt-16 ${
-          hero.backgroundImage ? "" : "hero-gradient"
+          hasMedia ? "" : "hero-gradient"
         }`}
         style={
-          hero.backgroundImage
+          showImage
             ? {
                 backgroundImage: `url(${hero.backgroundImage})`,
                 backgroundSize: "cover",
@@ -25,8 +28,21 @@ export default async function Home() {
             : undefined
         }
       >
-        {/* Dark overlay for legibility when a custom background image is set */}
-        {hero.backgroundImage && <div className="absolute inset-0 bg-black/55" />}
+        {showVideo && (
+          <video
+            key={hero.backgroundVideo}
+            src={hero.backgroundVideo}
+            poster={hero.backgroundImage || undefined}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        {/* Dark overlay for legibility when a custom background media is set */}
+        {hasMedia && <div className="absolute inset-0 bg-black/55" />}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(74,106,150,0.15),transparent_70%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(74,106,150,0.08),transparent_60%)]" />
 

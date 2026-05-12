@@ -32,11 +32,17 @@ const TABS: Tab[] = [
 ];
 
 const IMAGE_KEYS = new Set(["image", "photo", "avatar", "logo", "backgroundImage", "background", "gallery"]);
+const VIDEO_KEYS = new Set(["video", "backgroundVideo"]);
 
 function isImageKey(key: string) {
   if (IMAGE_KEYS.has(key)) return true;
   const lower = key.toLowerCase();
   return lower.endsWith("image") || lower.endsWith("photo") || lower.endsWith("background");
+}
+
+function isVideoKey(key: string) {
+  if (VIDEO_KEYS.has(key)) return true;
+  return key.toLowerCase().endsWith("video");
 }
 
 function isLongTextKey(key: string) {
@@ -170,6 +176,132 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
       {value && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={value} alt="preview" className="mt-2 max-h-28 rounded border border-navy-800" />
+      )}
+    </div>
+  );
+}
+
+function VideoInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [uploading, setUploading] = useState(false);
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.ok) onChange(data.url);
+      else alert("Upload failed: " + data.error);
+    } catch (err) {
+      alert("Upload failed: " + (err instanceof Error ? err.message : "Unknown"));
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="/uploads/video.mp4 or https://..."
+        className="w-full px-3 py-2.5 bg-[#06101f] border border-navy-800 rounded text-white text-sm focus:outline-none focus:border-blue-500/60 transition-colors"
+      />
+      <div className="flex items-center gap-2">
+        <label className="cursor-pointer px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-navy-800 hover:bg-navy-700 text-white rounded">
+          {uploading ? "Uploading..." : "Upload Video"}
+          <input type="file" accept="video/*" onChange={handleFile} className="hidden" disabled={uploading} />
+        </label>
+        {value && (
+          <button
+            type="button"
+            onClick={() => onChange("")}
+            className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider bg-navy-900 hover:bg-navy-800 border border-navy-800 text-navy-300 rounded"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+      {value && (
+        <video
+          key={value}
+          src={value}
+          muted
+          loop
+          autoPlay
+          playsInline
+          className="mt-2 max-h-40 rounded border border-navy-800 bg-black"
+        />
+      )}
+      <p className="text-[10px] text-navy-500 leading-relaxed">
+        MP4 / WebM recommended. Keep files under ~20 MB for fast loading. Video plays muted and loops.
+      </p>
+    </div>
+  );
+}
+
+function BackgroundControl({
+  path,
+  type,
+  image,
+  video,
+  onChange,
+}: {
+  path: (string | number)[];
+  type: string;
+  image: string;
+  video: string;
+  onChange: (path: (string | number)[], value: Json) => void;
+}) {
+  const options: { value: string; label: string; description: string }[] = [
+    { value: "none", label: "None", description: "Default gradient" },
+    { value: "image", label: "Image", description: "Static photo" },
+    { value: "video", label: "Video", description: "Looping clip" },
+  ];
+
+  return (
+    <div className="mb-6">
+      <Label>Background</Label>
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        {options.map((opt) => {
+          const active = type === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onChange([...path, "backgroundType"], opt.value)}
+              className={`px-3 py-2.5 text-left rounded border transition-colors ${
+                active
+                  ? "bg-blue-600/20 border-blue-500 text-white"
+                  : "bg-[#0a1426] border-navy-800 text-navy-300 hover:border-navy-700 hover:text-white"
+              }`}
+            >
+              <div className="text-[11px] font-bold uppercase tracking-wider">{opt.label}</div>
+              <div className="text-[10px] text-navy-400 mt-0.5">{opt.description}</div>
+            </button>
+          );
+        })}
+      </div>
+      {type === "image" && (
+        <div>
+          <Label>Background Image</Label>
+          <ImageInput value={image} onChange={(v) => onChange([...path, "backgroundImage"], v)} />
+        </div>
+      )}
+      {type === "video" && (
+        <div>
+          <Label>Background Video</Label>
+          <VideoInput value={video} onChange={(v) => onChange([...path, "backgroundVideo"], v)} />
+        </div>
+      )}
+      {type === "none" && (
+        <p className="text-xs text-navy-500 italic">
+          Using the default gradient. Pick Image or Video to set custom media.
+        </p>
       )}
     </div>
   );
@@ -381,6 +513,15 @@ interface FieldProps {
 function Field({ path, value, parentKey, onChange }: FieldProps) {
   const label = humanize(parentKey);
 
+  if (typeof value === "string" && isVideoKey(parentKey)) {
+    return (
+      <div className="mb-5">
+        <Label>{label}</Label>
+        <VideoInput value={value} onChange={(v) => onChange(path, v)} />
+      </div>
+    );
+  }
+
   if (typeof value === "string" && isImageKey(parentKey)) {
     return (
       <div className="mb-5">
@@ -521,6 +662,8 @@ function Field({ path, value, parentKey, onChange }: FieldProps) {
   return null;
 }
 
+const BACKGROUND_KEYS = new Set(["backgroundType", "backgroundImage", "backgroundVideo"]);
+
 function ObjectFields({
   path,
   value,
@@ -531,11 +674,23 @@ function ObjectFields({
   onChange: (path: (string | number)[], value: Json) => void;
 }) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  const obj = value as Record<string, Json>;
+  const hasBackgroundToggle = "backgroundType" in obj;
   return (
     <>
-      {Object.entries(value as Record<string, Json>).map(([key, val]) => (
-        <Field key={key} path={[...path, key]} value={val} parentKey={key} onChange={onChange} />
-      ))}
+      {hasBackgroundToggle && (
+        <BackgroundControl
+          path={path}
+          type={typeof obj.backgroundType === "string" ? (obj.backgroundType as string) : "none"}
+          image={typeof obj.backgroundImage === "string" ? (obj.backgroundImage as string) : ""}
+          video={typeof obj.backgroundVideo === "string" ? (obj.backgroundVideo as string) : ""}
+          onChange={onChange}
+        />
+      )}
+      {Object.entries(obj).map(([key, val]) => {
+        if (hasBackgroundToggle && BACKGROUND_KEYS.has(key)) return null;
+        return <Field key={key} path={[...path, key]} value={val} parentKey={key} onChange={onChange} />;
+      })}
     </>
   );
 }
@@ -582,7 +737,7 @@ function LoginScreen({ onSuccess, onExit }: { onSuccess: () => void; onExit: () 
           <div className="inline-flex items-center gap-2 mb-6">
             <h1 className="text-3xl font-bold tracking-wider text-white">YGCCC</h1>
             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-300 border border-blue-400/40 px-2 py-0.5 rounded">
-              ADMIN
+              YUD-AD
             </span>
           </div>
           <h2 className="text-xl font-bold text-white mb-1">Sign In</h2>
@@ -888,7 +1043,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <h1 className="text-base font-bold tracking-wider text-white">YGCCC</h1>
             <span className="text-[9px] font-bold uppercase tracking-wider text-blue-300 border border-blue-400/40 px-2 py-0.5 rounded">
-              ADMIN
+              YUD-AD
             </span>
           </div>
           <div className="flex items-center gap-3">

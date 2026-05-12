@@ -42,7 +42,9 @@
       "description": "The cash-flow engine of YGCCC. Building long-term wealth through multifamily real estate.",
       "primaryCta": "View Projects",
       "secondaryCta": "Get in Touch",
-      "backgroundImage": ""
+      "backgroundType": "none",
+      "backgroundImage": "",
+      "backgroundVideo": ""
     },
     "armA": {
       "label": "A. Development Services",

@@ -17,7 +17,7 @@ export default function AdminShortcut() {
         try {
           await fetch("/api/auth/logout", { method: "POST" });
         } catch {}
-        router.push("/admin");
+        router.push("/YUD-ad");
       }
     };
     window.addEventListener("keydown", handler);

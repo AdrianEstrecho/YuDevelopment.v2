@@ -17,8 +17,9 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const assetType: "image" | "file" = file.type.startsWith("video/") ? "file" : "image";
 
-    const asset = await getSanityClient().assets.upload("image", buffer, {
+    const asset = await getSanityClient().assets.upload(assetType, buffer, {
       filename: file.name,
       contentType: file.type,
     });
