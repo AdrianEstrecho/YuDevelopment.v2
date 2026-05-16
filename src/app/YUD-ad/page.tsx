@@ -2,7 +2,35 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { createClient, type SanityClient } from "next-sanity";
 import type { Json } from "@/lib/content";
+
+let cachedUploadClient: SanityClient | null = null;
+
+async function getUploadClient(): Promise<SanityClient> {
+  if (cachedUploadClient) return cachedUploadClient;
+  const res = await fetch("/api/upload-token", { method: "POST" });
+  if (!res.ok) throw new Error("Could not fetch upload credentials");
+  const { projectId, dataset, token } = await res.json();
+  cachedUploadClient = createClient({
+    projectId,
+    dataset,
+    apiVersion: "2024-01-01",
+    useCdn: false,
+    token,
+  });
+  return cachedUploadClient;
+}
+
+async function uploadAssetToSanity(file: File): Promise<string> {
+  const client = await getUploadClient();
+  const assetType: "image" | "file" = file.type.startsWith("video/") ? "file" : "image";
+  const asset = await client.assets.upload(assetType, file, {
+    filename: file.name,
+    contentType: file.type,
+  });
+  return asset.url;
+}
 
 type AuthState = "checking" | "unauthenticated" | "authenticated";
 
@@ -135,13 +163,9 @@ function ImageInput({ value, onChange }: { value: string; onChange: (v: string) 
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.ok) onChange(data.url);
-      else alert("Upload failed: " + data.error);
+      const url = await uploadAssetToSanity(file);
+      onChange(url);
     } catch (err) {
       alert("Upload failed: " + (err instanceof Error ? err.message : "Unknown"));
     } finally {
@@ -188,13 +212,9 @@ function VideoInput({ value, onChange }: { value: string; onChange: (v: string) 
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.ok) onChange(data.url);
-      else alert("Upload failed: " + data.error);
+      const url = await uploadAssetToSanity(file);
+      onChange(url);
     } catch (err) {
       alert("Upload failed: " + (err instanceof Error ? err.message : "Unknown"));
     } finally {
@@ -238,7 +258,7 @@ function VideoInput({ value, onChange }: { value: string; onChange: (v: string) 
         />
       )}
       <p className="text-[10px] text-navy-500 leading-relaxed">
-        MP4 / WebM recommended. Keep files under ~20 MB for fast loading. Video plays muted and loops.
+        MP4 / WebM recommended. Keep files under ~100 MB for fast loading. Video plays muted and loops.
       </p>
     </div>
   );
