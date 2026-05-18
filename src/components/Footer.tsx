@@ -22,8 +22,7 @@ export default function Footer({ brand, navigation }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="lg:col-span-1">
             <div className="text-xl font-bold tracking-tight text-white mb-4">
-              <span className="font-sans font-extrabold tracking-wider">{brand.namePart1}</span>
-              <span className="font-sans font-light tracking-wider">{brand.namePart2}</span>
+              <span className="font-sans font-extrabold tracking-wider">{brand.name}</span>
             </div>
             <p className="text-sm leading-relaxed text-gray-500">{brand.tagline}</p>
           </div>

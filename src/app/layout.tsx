@@ -44,8 +44,7 @@ export default async function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${chakraPetch.variable} ${orbitron.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Navigation
-          namePart1={content.brand.namePart1}
-          namePart2={content.brand.namePart2}
+          name={content.brand.name}
           logo={content.brand.logo}
           links={content.navigation.links}
         />

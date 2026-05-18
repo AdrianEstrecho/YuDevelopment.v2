@@ -12,8 +12,7 @@ export type Json =
   | { [key: string]: Json };
 
 export interface BrandContent {
-  namePart1: string;
-  namePart2: string;
+  name: string;
   tagline: string;
   email: string;
   copyright: string;
@@ -251,6 +250,14 @@ function normalizeProjects(content: SiteContent): SiteContent {
     ...content,
     brand: {
       ...content.brand,
+      name:
+        content.brand?.name ??
+        [
+          (content.brand as unknown as { namePart1?: string })?.namePart1,
+          (content.brand as unknown as { namePart2?: string })?.namePart2,
+        ]
+          .filter(Boolean)
+          .join(""),
       logo: content.brand?.logo ?? "",
     },
     home: {

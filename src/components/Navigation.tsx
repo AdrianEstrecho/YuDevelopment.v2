@@ -6,13 +6,12 @@ import { useState, useEffect } from "react";
 import type { NavLink } from "@/lib/content";
 
 interface NavigationProps {
-  namePart1: string;
-  namePart2: string;
+  name: string;
   logo: string;
   links: NavLink[];
 }
 
-export default function Navigation({ namePart1, namePart2, logo, links }: NavigationProps) {
+export default function Navigation({ name, logo, links }: NavigationProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -40,7 +39,7 @@ export default function Navigation({ namePart1, namePart2, logo, links }: Naviga
         <div className="flex items-center justify-between h-16">
           <Link
             href="/"
-            aria-label={`${namePart1}${namePart2} home`}
+            aria-label={`${name} home`}
             className={`flex items-center transition-colors duration-500 whitespace-nowrap ${
               overHero ? "text-white" : "text-gray-900"
             }`}
@@ -49,13 +48,12 @@ export default function Navigation({ namePart1, namePart2, logo, links }: Naviga
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={logo}
-                alt={`${namePart1}${namePart2}`}
+                alt={name}
                 className="h-10 w-auto"
               />
             ) : (
               <span className="font-orbitron text-lg leading-7 font-extrabold uppercase tracking-[0.3em]">
-                {namePart1}
-                {namePart2}
+                {name}
               </span>
             )}
           </Link>
