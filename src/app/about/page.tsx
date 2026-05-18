@@ -45,12 +45,34 @@ export default async function AboutPage() {
               </ScrollReveal>
             </div>
             <ScrollReveal delay={0.15}>
-              <div className="grid grid-cols-2 gap-8">
-                {stats.map((s) => (
-                  <div key={s.label} className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
-                    <p className="text-4xl font-serif text-gray-900 mb-2">{s.value}</p>
-                    <p className="text-xs uppercase tracking-widest text-gray-500">{s.label}</p>
-                    <p className="text-sm text-gray-400 mt-2">{s.sublabel}</p>
+              <div className="grid grid-cols-2 gap-6">
+                {stats.map((s, i) => (
+                  <div
+                    key={s.label}
+                    tabIndex={0}
+                    className="group relative overflow-hidden p-8 bg-gray-50 rounded-lg border border-gray-200 cursor-default transition-all duration-300 ease-out hover:bg-white hover:-translate-y-1 hover:border-gray-900 hover:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.25)] focus:outline-none focus-visible:border-gray-900 focus-visible:ring-2 focus-visible:ring-gray-900/15"
+                  >
+                    {/* sweep accent */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gray-900 to-transparent scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 origin-left transition-transform duration-500 ease-out"
+                    />
+                    <p className="text-4xl font-serif text-gray-900 mb-2 transition-transform duration-300 ease-out group-hover:scale-[1.06] group-hover:-translate-y-0.5 group-focus-visible:scale-[1.06] origin-left">
+                      {s.value}
+                    </p>
+                    <p className="text-xs uppercase tracking-widest text-gray-500 transition-colors duration-300 group-hover:text-gray-900 group-focus-visible:text-gray-900">
+                      {s.label}
+                    </p>
+                    <p className="text-sm text-gray-400 mt-2 transition-colors duration-300 group-hover:text-gray-600 group-focus-visible:text-gray-600">
+                      {s.sublabel}
+                    </p>
+                    {/* corner index */}
+                    <span
+                      aria-hidden
+                      className="absolute top-3 right-3 inline-flex items-center justify-center w-5 h-5 rounded-full bg-gray-900 text-white text-[9px] font-semibold opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-300 ease-out"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -65,13 +87,40 @@ export default async function AboutPage() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
             {values.map((value, i) => (
               <ScrollReveal key={value.title} delay={i * 0.05}>
-                <div className="flex gap-6 p-8 bg-white rounded-lg border border-gray-200">
-                  <div className="shrink-0 w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center text-white text-sm font-semibold">
+                <div
+                  tabIndex={0}
+                  className="group relative overflow-hidden flex gap-6 p-8 bg-white rounded-lg border border-gray-200 cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:border-gray-900 hover:shadow-[0_22px_50px_-24px_rgba(0,0,0,0.25)] focus:outline-none focus-visible:border-gray-900 focus-visible:ring-2 focus-visible:ring-gray-900/15"
+                >
+                  {/* sweep accent */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gray-900 to-transparent scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 origin-left transition-transform duration-500 ease-out"
+                  />
+                  <div className="shrink-0 w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center text-white text-sm font-semibold transition-transform duration-500 ease-out group-hover:rotate-[360deg] group-focus-visible:rotate-[360deg]">
                     {String(i + 1).padStart(2, "0")}
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{value.title}</h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">{value.description}</p>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 inline-flex items-center gap-2">
+                      <span className="relative">
+                        {value.title}
+                        <span
+                          aria-hidden
+                          className="absolute left-0 -bottom-0.5 h-px w-full bg-gray-900 scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 origin-left transition-transform duration-400 ease-out"
+                        />
+                      </span>
+                      <svg
+                        aria-hidden
+                        className="w-4 h-4 text-gray-900 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0 transition-all duration-300 ease-out"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 12h14m-7-7l7 7-7 7" />
+                      </svg>
+                    </h3>
+                    <p className="text-sm text-gray-600 leading-relaxed transition-colors duration-300 group-hover:text-gray-700 group-focus-visible:text-gray-700">
+                      {value.description}
+                    </p>
                   </div>
                 </div>
               </ScrollReveal>

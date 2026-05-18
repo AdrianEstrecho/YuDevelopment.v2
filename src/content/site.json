@@ -93,29 +93,6 @@
         }
       ]
     },
-    "featuredProjects": [
-      {
-        "name": "Vista Multifamily",
-        "type": "Multifamily Development",
-        "units": "120 Units",
-        "status": "Pre-Development",
-        "image": ""
-      },
-      {
-        "name": "Greenfield Residences",
-        "type": "Workforce Housing",
-        "units": "96 Units",
-        "status": "In Entitlements",
-        "image": ""
-      },
-      {
-        "name": "Meridian Apartments",
-        "type": "Urban Infill",
-        "units": "64 Units",
-        "status": "Feasibility",
-        "image": ""
-      }
-    ],
     "cta": {
       "eyebrow": "Partner With Us",
       "title": "Ready to Build Long-Term Wealth?",

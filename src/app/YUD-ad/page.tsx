@@ -50,7 +50,6 @@ const TABS: Tab[] = [
   { key: "armA", label: "Services", icon: "💼", description: "Cash flow services arm content (A).", path: ["home", "armA"], target: "/#services-arm" },
   { key: "armB", label: "Equity", icon: "🏗️", description: "Equity development arm content (B).", path: ["home", "armB"], target: "/#equity-arm" },
   { key: "capabilities", label: "Capabilities", icon: "⚡", description: "End-to-end platform capabilities grid.", path: ["home", "capabilities"], target: "/#capabilities" },
-  { key: "featured", label: "Featured", icon: "⭐", description: "Featured projects shown on the home page.", path: ["home", "featuredProjects"], target: "/#featured" },
   { key: "homeCta", label: "Home CTA", icon: "📢", description: "Home page call-to-action section.", path: ["home", "cta"], target: "/#home-cta" },
   { key: "about", label: "About", icon: "📖", description: "About page — model, values, and milestones.", path: ["about"], target: "/about" },
   { key: "portfolio", label: "Portfolio", icon: "🗂️", description: "Portfolio projects and pipeline copy.", path: ["portfolio"], target: "/portfolio" },

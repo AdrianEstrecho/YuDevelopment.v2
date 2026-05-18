@@ -4,8 +4,11 @@ import SectionHeading from "@/components/SectionHeading";
 import { getContent } from "@/lib/content";
 
 export default async function Home() {
-  const { home } = await getContent();
-  const { hero, armA, armB, capabilities, featuredProjects, cta } = home;
+  const { home, portfolio } = await getContent();
+  const { hero, armA, armB, capabilities, cta } = home;
+  const featuredProjects = portfolio.projects
+    .filter((p) => p.status === "Completed")
+    .slice(0, 3);
   const showVideo = hero.backgroundType === "video" && !!hero.backgroundVideo;
   const showImage = hero.backgroundType === "image" && !!hero.backgroundImage;
   const hasMedia = showVideo || showImage;
@@ -45,40 +48,75 @@ export default async function Home() {
         <div className="absolute inset-x-0 bottom-0 z-10 px-6 sm:px-10 lg:px-[50px] pb-16 sm:pb-20">
           <ScrollReveal>
             <h1
-              className="hero-tagline text-left text-white font-medium leading-[1.1] tracking-[-0.05em] mb-3 max-w-4xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
-              style={{ fontSize: "clamp(28px, 5vw, 80px)" }}
+              className="hero-tagline text-white text-left font-medium tracking-tighter leading-[1.1] mb-3 max-w-4xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
+              style={{ fontSize: "clamp(24px, 4.2vw, 64px)", minHeight: "auto" }}
             >
               {hero.description}
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.15}>
-            <Link
-              href="#arms"
-              className="relative overflow-hidden group backdrop-blur-md inline-flex items-center"
-              style={{
-                padding: "clamp(8px, 1.2vw, 12px) clamp(16px, 2.5vw, 24px)",
-                gap: "clamp(4px, 0.8vw, 8px)",
-              }}
-            >
-              <span className="absolute inset-0 bg-white/20 transition-transform duration-300 ease-out scale-y-0 group-hover:scale-y-100 [transform-origin:top] group-hover:[transform-origin:bottom]" />
-              <span
-                className="relative z-10 text-white font-light flex items-center"
-                style={{ fontSize: "clamp(12px, 1.2vw, 14px)", gap: "clamp(4px, 0.8vw, 8px)" }}
+            <div className="flex flex-wrap items-center mt-2" style={{ gap: "clamp(10px, 1.2vw, 14px)" }}>
+              {/* Primary — Projects */}
+              <Link
+                href="/portfolio"
+                aria-label="View projects"
+                className="group relative inline-flex items-center bg-white text-gray-900 hover:bg-gray-100 transition-colors duration-300 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.5)]"
+                style={{
+                  padding: "clamp(10px, 1.3vw, 14px) clamp(20px, 2.6vw, 28px)",
+                  gap: "clamp(6px, 0.9vw, 10px)",
+                }}
               >
+                <span
+                  className="font-medium uppercase tracking-[0.18em]"
+                  style={{ fontSize: "clamp(11px, 1.05vw, 13px)" }}
+                >
+                  Projects
+                </span>
                 <svg
+                  className="transition-transform duration-300 ease-out group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                   style={{
-                    width: "clamp(12px, 1.2vw, 14px)",
-                    height: "clamp(12px, 1.2vw, 14px)",
+                    width: "clamp(14px, 1.3vw, 16px)",
+                    height: "clamp(14px, 1.3vw, 16px)",
                   }}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 12h14m-7-7l7 7-7 7" />
                 </svg>
-                See more
-              </span>
-            </Link>
+              </Link>
+
+              {/* Secondary — Scroll cue */}
+              <Link
+                href="#arms"
+                aria-label="See more"
+                className="group relative overflow-hidden inline-flex items-center backdrop-blur-md border border-white/30 hover:border-white/60 transition-colors duration-300"
+                style={{
+                  padding: "clamp(10px, 1.3vw, 14px) clamp(20px, 2.6vw, 28px)",
+                  gap: "clamp(6px, 0.9vw, 10px)",
+                }}
+              >
+                <span className="absolute inset-0 bg-white/15 transition-transform duration-300 ease-out scale-y-0 group-hover:scale-y-100 [transform-origin:top] group-hover:[transform-origin:bottom]" />
+                <span
+                  className="relative z-10 font-medium uppercase tracking-[0.18em] text-white"
+                  style={{ fontSize: "clamp(11px, 1.05vw, 13px)" }}
+                >
+                  See more
+                </span>
+                <svg
+                  className="relative z-10 text-white transition-transform duration-300 ease-out group-hover:translate-y-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style={{
+                    width: "clamp(14px, 1.3vw, 16px)",
+                    height: "clamp(14px, 1.3vw, 16px)",
+                  }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19 9l-7 7-7-7" />
+                </svg>
+              </Link>
+            </div>
           </ScrollReveal>
         </div>
       </section>
@@ -130,11 +168,12 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* Featured Projects — auto-pulled from portfolio */}
+      {featuredProjects.length > 0 && (
       <section id="featured" className="py-24 lg:py-32 bg-white scroll-mt-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-16">
-            <SectionHeading label="Pipeline" title="Current Projects" />
+            <SectionHeading label="Track Record" title="Completed Projects" />
             <ScrollReveal>
               <Link
                 href="/portfolio"
@@ -149,8 +188,8 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {featuredProjects.map((project, i) => (
-              <ScrollReveal key={project.name} delay={i * 0.1}>
-                <div className="group cursor-pointer">
+              <ScrollReveal key={project.slug || project.name} delay={i * 0.1}>
+                <Link href={`/portfolio/${project.slug}`} className="group block">
                   <div className="aspect-[3/4] rounded-lg overflow-hidden relative mb-6 border border-gray-200 bg-gradient-to-br from-gray-700 to-gray-900">
                     {project.image && (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -164,18 +203,19 @@ export default async function Home() {
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent">
                       <p className="text-white text-xs uppercase tracking-widest mb-1">{project.type}</p>
-                      <p className="text-white/70 text-xs">{project.units}</p>
+                      <p className="text-white/70 text-xs">{project.scope}</p>
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 group-hover:text-gray-600 transition-colors">
                     {project.name}
                   </h3>
-                </div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
+      )}
 
       {/* CTA */}
       <section id="home-cta" className="py-24 lg:py-32 bg-gray-950 scroll-mt-16">

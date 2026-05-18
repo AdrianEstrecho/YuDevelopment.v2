@@ -56,14 +56,6 @@ export interface HomeCapabilities {
   items: CapabilityItem[];
 }
 
-export interface HomeFeaturedProject {
-  name: string;
-  type: string;
-  units: string;
-  status: string;
-  image: string;
-}
-
 export interface HomeCta {
   eyebrow: string;
   title: string;
@@ -77,7 +69,6 @@ export interface HomeContent {
   armA: HomeArm;
   armB: HomeArm;
   capabilities: HomeCapabilities;
-  featuredProjects: HomeFeaturedProject[];
   cta: HomeCta;
 }
 
@@ -256,6 +247,12 @@ function normalizeProjects(content: SiteContent): SiteContent {
     (typeof brandRest.name === "string" && brandRest.name) ||
     [namePart1, namePart2].filter(Boolean).join("") ||
     "";
+  const rawHome = (content.home ?? {}) as unknown as Record<string, unknown>;
+  const { featuredProjects: _legacyFeatured, ...homeRest } = rawHome as {
+    featuredProjects?: unknown;
+    [k: string]: unknown;
+  };
+  void _legacyFeatured;
   return {
     ...content,
     brand: {
@@ -264,7 +261,7 @@ function normalizeProjects(content: SiteContent): SiteContent {
       logo: typeof brandRest.logo === "string" ? (brandRest.logo as string) : "",
     },
     home: {
-      ...content.home,
+      ...(homeRest as unknown as HomeContent),
       hero: {
         ...content.home.hero,
         backgroundType,
