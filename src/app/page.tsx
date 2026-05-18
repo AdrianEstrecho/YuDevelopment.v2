@@ -197,7 +197,15 @@ export default async function Home() {
                     )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                     <div className="absolute top-4 right-4">
-                      <span className="px-3 py-1 text-[10px] font-semibold uppercase tracking-widest bg-white/90 text-gray-900 rounded-full">
+                      <span
+                        className={`px-3 py-1 text-[10px] font-semibold uppercase tracking-widest rounded-full ${
+                          project.status === "Completed"
+                            ? "bg-green-600/90 text-white"
+                            : project.status === "Under Construction"
+                              ? "bg-orange-500/90 text-white"
+                              : "bg-blue-500/90 text-white"
+                        }`}
+                      >
                         {project.status}
                       </span>
                     </div>
