@@ -8,10 +8,11 @@ import type { NavLink } from "@/lib/content";
 interface NavigationProps {
   namePart1: string;
   namePart2: string;
+  logo: string;
   links: NavLink[];
 }
 
-export default function Navigation({ namePart1, namePart2, links }: NavigationProps) {
+export default function Navigation({ namePart1, namePart2, logo, links }: NavigationProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -39,12 +40,26 @@ export default function Navigation({ namePart1, namePart2, links }: NavigationPr
         <div className="flex items-center justify-between h-16">
           <Link
             href="/"
-            aria-label="YuDevelopment home"
-            className={`font-orbitron text-lg leading-7 font-extrabold uppercase tracking-[0.3em] transition-colors duration-500 whitespace-nowrap ${
+            aria-label={`${namePart1}${namePart2} home`}
+            className={`flex items-center transition-colors duration-500 whitespace-nowrap ${
               overHero ? "text-white" : "text-gray-900"
             }`}
           >
-            YuDevelopment
+            {logo ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logo}
+                alt={`${namePart1}${namePart2}`}
+                className={`h-10 w-auto transition-[filter] duration-500 ${
+                  overHero ? "brightness-0 invert" : ""
+                }`}
+              />
+            ) : (
+              <span className="font-orbitron text-lg leading-7 font-extrabold uppercase tracking-[0.3em]">
+                {namePart1}
+                {namePart2}
+              </span>
+            )}
           </Link>
 
           <nav className="hidden md:flex items-center gap-12">

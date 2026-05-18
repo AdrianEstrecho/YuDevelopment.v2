@@ -17,6 +17,7 @@ export interface BrandContent {
   tagline: string;
   email: string;
   copyright: string;
+  logo: string;
 }
 
 export interface NavLink {
@@ -31,12 +32,7 @@ export interface NavigationContent {
 export type HeroBackgroundType = "none" | "image" | "video";
 
 export interface HomeHero {
-  eyebrow: string;
-  titleLine1: string;
-  titleLine2: string;
   description: string;
-  primaryCta: string;
-  secondaryCta: string;
   backgroundType: HeroBackgroundType;
   backgroundImage: string;
   backgroundVideo: string;
@@ -253,6 +249,10 @@ function normalizeProjects(content: SiteContent): SiteContent {
     storedType && validTypes.includes(storedType) ? storedType : inferredType;
   return {
     ...content,
+    brand: {
+      ...content.brand,
+      logo: content.brand?.logo ?? "",
+    },
     home: {
       ...content.home,
       hero: {

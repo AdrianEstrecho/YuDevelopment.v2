@@ -4,7 +4,8 @@
     "namePart2": "DEVELOPMENT",
     "tagline": "The golden goose of YGCCC. Generating cash flow through development services and building long-term equity through multifamily real estate.",
     "email": "info@yudevelopment.com",
-    "copyright": "YGCCC"
+    "copyright": "YGCCC",
+    "logo": "/logo.svg"
   },
   "navigation": {
     "links": [
@@ -36,12 +37,7 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Services · Development · Equity",
-      "titleLine1": "GOLDEN",
-      "titleLine2": "GOOSE",
-      "description": "The cash-flow engine of YGCCC. Building long-term wealth through multifamily real estate.",
-      "primaryCta": "View Projects",
-      "secondaryCta": "Get in Touch",
+      "description": "Housing that Works for Working People",
       "backgroundType": "none",
       "backgroundImage": "",
       "backgroundVideo": ""

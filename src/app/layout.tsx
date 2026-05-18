@@ -46,6 +46,7 @@ export default async function RootLayout({
         <Navigation
           namePart1={content.brand.namePart1}
           namePart2={content.brand.namePart2}
+          logo={content.brand.logo}
           links={content.navigation.links}
         />
         <main className="flex-1">{children}</main>

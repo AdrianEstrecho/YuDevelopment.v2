@@ -15,7 +15,7 @@ export default async function Home() {
       {/* Hero */}
       <section
         id="hero"
-        className={`relative min-h-screen flex items-center justify-center overflow-hidden scroll-mt-16 ${
+        className={`relative min-h-screen overflow-hidden scroll-mt-16 ${
           hasMedia ? "" : "hero-gradient"
         }`}
         style={
@@ -41,49 +41,13 @@ export default async function Home() {
             className="absolute inset-0 w-full h-full object-cover"
           />
         )}
-        {/* Dark overlay for legibility when a custom background media is set */}
-        {hasMedia && <div className="absolute inset-0 bg-black/55" />}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(74,106,150,0.15),transparent_70%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(74,106,150,0.08),transparent_60%)]" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <div className="absolute inset-x-0 bottom-0 z-10 px-6 sm:px-10 lg:px-[50px] pb-16 sm:pb-20">
           <ScrollReveal>
-            <p className="text-sm md:text-base font-bold uppercase tracking-[0.4em] text-gray-300 mb-10">
-              {hero.eyebrow}
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <h1 className="font-serif font-bold text-white leading-[0.9] tracking-tight mb-10 text-7xl sm:text-8xl md:text-[9rem] lg:text-[12rem] xl:text-[14rem]">
-              {hero.titleLine1}
-              <br />
-              {hero.titleLine2}
+            <h1 className="font-serif font-light text-white leading-[1.05] tracking-tight max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
+              {hero.description}
             </h1>
           </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <p className="text-xl md:text-2xl lg:text-3xl text-gray-200 max-w-4xl mx-auto leading-snug mb-14 font-light">
-              {hero.description}
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/portfolio"
-                className="inline-flex items-center justify-center px-8 py-4 text-sm font-medium uppercase tracking-widest text-gray-900 bg-white rounded hover:bg-gray-100 transition-colors"
-              >
-                {hero.primaryCta}
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 text-sm font-medium uppercase tracking-widest text-white border border-gray-500 rounded hover:border-gray-300 hover:bg-white/5 transition-colors"
-              >
-                {hero.secondaryCta}
-              </Link>
-            </div>
-          </ScrollReveal>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <div className="w-px h-16 bg-gradient-to-b from-transparent to-gray-500" />
         </div>
       </section>
 
