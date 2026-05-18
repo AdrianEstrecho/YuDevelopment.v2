@@ -50,9 +50,7 @@ export default function Navigation({ namePart1, namePart2, logo, links }: Naviga
               <img
                 src={logo}
                 alt={`${namePart1}${namePart2}`}
-                className={`h-10 w-auto transition-[filter] duration-500 ${
-                  overHero ? "brightness-0 invert" : ""
-                }`}
+                className="h-10 w-auto"
               />
             ) : (
               <span className="font-orbitron text-lg leading-7 font-extrabold uppercase tracking-[0.3em]">
