@@ -51,6 +51,35 @@ export default async function Home() {
               {hero.description}
             </h1>
           </ScrollReveal>
+          <ScrollReveal delay={0.15}>
+            <Link
+              href="#arms"
+              className="relative overflow-hidden group backdrop-blur-md inline-flex items-center"
+              style={{
+                padding: "clamp(8px, 1.2vw, 12px) clamp(16px, 2.5vw, 24px)",
+                gap: "clamp(4px, 0.8vw, 8px)",
+              }}
+            >
+              <span className="absolute inset-0 bg-white/20 transition-transform duration-300 ease-out scale-y-0 group-hover:scale-y-100 [transform-origin:top] group-hover:[transform-origin:bottom]" />
+              <span
+                className="relative z-10 text-white font-light flex items-center"
+                style={{ fontSize: "clamp(12px, 1.2vw, 14px)", gap: "clamp(4px, 0.8vw, 8px)" }}
+              >
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  style={{
+                    width: "clamp(12px, 1.2vw, 14px)",
+                    height: "clamp(12px, 1.2vw, 14px)",
+                  }}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+                See more
+              </span>
+            </Link>
+          </ScrollReveal>
         </div>
       </section>
 
