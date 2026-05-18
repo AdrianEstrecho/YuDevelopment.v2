@@ -246,19 +246,22 @@ function normalizeProjects(content: SiteContent): SiteContent {
       : "none";
   const backgroundType: HeroBackgroundType =
     storedType && validTypes.includes(storedType) ? storedType : inferredType;
+  const rawBrand = (content.brand ?? {}) as unknown as Record<string, unknown>;
+  const { namePart1, namePart2, ...brandRest } = rawBrand as {
+    namePart1?: string;
+    namePart2?: string;
+    [k: string]: unknown;
+  };
+  const mergedName =
+    (typeof brandRest.name === "string" && brandRest.name) ||
+    [namePart1, namePart2].filter(Boolean).join("") ||
+    "";
   return {
     ...content,
     brand: {
-      ...content.brand,
-      name:
-        content.brand?.name ??
-        [
-          (content.brand as unknown as { namePart1?: string })?.namePart1,
-          (content.brand as unknown as { namePart2?: string })?.namePart2,
-        ]
-          .filter(Boolean)
-          .join(""),
-      logo: content.brand?.logo ?? "",
+      ...(brandRest as unknown as BrandContent),
+      name: mergedName,
+      logo: typeof brandRest.logo === "string" ? (brandRest.logo as string) : "",
     },
     home: {
       ...content.home,
