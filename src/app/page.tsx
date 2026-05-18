@@ -44,7 +44,7 @@ export default async function Home() {
 
         <div className="absolute inset-x-0 bottom-0 z-10 px-6 sm:px-10 lg:px-[50px] pb-16 sm:pb-20">
           <ScrollReveal>
-            <h1 className="font-serif font-light text-white leading-[1.05] tracking-tight max-w-3xl text-3xl sm:text-4xl md:text-5xl lg:text-6xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
+            <h1 className="font-sans font-normal text-white leading-tight max-w-2xl text-2xl sm:text-3xl md:text-4xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
               {hero.description}
             </h1>
           </ScrollReveal>
