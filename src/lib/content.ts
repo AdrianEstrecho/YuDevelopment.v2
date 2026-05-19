@@ -31,7 +31,8 @@ export interface NavigationContent {
 export type HeroBackgroundType = "none" | "image" | "video";
 
 export interface HomeHero {
-  description: string;
+  descriptionLine1: string;
+  descriptionLine2: string;
   backgroundType: HeroBackgroundType;
   backgroundImage: string;
   backgroundVideo: string;
@@ -226,9 +227,33 @@ function stripSanityMeta(doc: Record<string, unknown>): SiteContent {
 
 /** Ensure every project has a slug and the newer optional fields */
 function normalizeProjects(content: SiteContent): SiteContent {
-  const heroImg = content.home.hero.backgroundImage ?? "";
-  const heroVid = content.home.hero.backgroundVideo ?? "";
-  const storedType = content.home.hero.backgroundType;
+  const rawHero = (content.home?.hero ?? {}) as unknown as Record<string, unknown>;
+  const {
+    eyebrow: _legacyEyebrow,
+    titleLine1: _legacyTitleLine1,
+    titleLine2: _legacyTitleLine2,
+    primaryCta: _legacyPrimaryCta,
+    secondaryCta: _legacySecondaryCta,
+    description: legacyDescription,
+    descriptionLine1: storedLine1,
+    descriptionLine2: storedLine2,
+    ...heroRest
+  } = rawHero;
+  void _legacyEyebrow;
+  void _legacyTitleLine1;
+  void _legacyTitleLine2;
+  void _legacyPrimaryCta;
+  void _legacySecondaryCta;
+  let descriptionLine1 = typeof storedLine1 === "string" ? storedLine1 : "";
+  let descriptionLine2 = typeof storedLine2 === "string" ? storedLine2 : "";
+  if (!descriptionLine1 && !descriptionLine2 && typeof legacyDescription === "string") {
+    const parts = legacyDescription.split(/\r?\n/);
+    descriptionLine1 = parts[0] ?? "";
+    descriptionLine2 = parts.slice(1).join(" ").trim();
+  }
+  const heroImg = typeof heroRest.backgroundImage === "string" ? heroRest.backgroundImage : "";
+  const heroVid = typeof heroRest.backgroundVideo === "string" ? heroRest.backgroundVideo : "";
+  const storedType = heroRest.backgroundType as HeroBackgroundType | undefined;
   const validTypes: HeroBackgroundType[] = ["none", "image", "video"];
   const inferredType: HeroBackgroundType = heroVid
     ? "video"
@@ -263,7 +288,8 @@ function normalizeProjects(content: SiteContent): SiteContent {
     home: {
       ...(homeRest as unknown as HomeContent),
       hero: {
-        ...content.home.hero,
+        descriptionLine1,
+        descriptionLine2,
         backgroundType,
         backgroundImage: heroImg,
         backgroundVideo: heroVid,

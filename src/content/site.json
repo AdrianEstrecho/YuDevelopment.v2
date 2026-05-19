@@ -36,7 +36,8 @@
   },
   "home": {
     "hero": {
-      "description": "Housing that Works for Working People",
+      "descriptionLine1": "Housing that Works",
+      "descriptionLine2": "for Working People",
       "backgroundType": "none",
       "backgroundImage": "",
       "backgroundVideo": ""

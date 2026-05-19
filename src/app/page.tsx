@@ -51,7 +51,13 @@ export default async function Home() {
               className="hero-tagline text-white text-left font-medium tracking-tighter leading-[1.1] mb-3 max-w-4xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]"
               style={{ fontSize: "clamp(24px, 4.2vw, 64px)", minHeight: "auto" }}
             >
-              {hero.description}
+              {hero.descriptionLine1}
+              {hero.descriptionLine2 && (
+                <>
+                  <br />
+                  {hero.descriptionLine2}
+                </>
+              )}
             </h1>
           </ScrollReveal>
           <ScrollReveal delay={0.15}>
