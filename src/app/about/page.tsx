@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import SectionHeading from "@/components/SectionHeading";
 import { getContent } from "@/lib/content";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const { about } = await getContent();
-  const { hero, model, stats, values, milestones } = about;
+  const { hero, model, stats, values, milestones, whereWeGoing } = about;
 
   return (
     <>
@@ -131,17 +132,46 @@ export default async function AboutPage() {
 
       <section className="py-24 lg:py-32 bg-white">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <SectionHeading label="Our Journey" title="Key Milestones" />
+          <SectionHeading label="Milestones" title="Our Journey So Far" />
           <div className="mt-16 space-y-0">
             {milestones.map((item, i) => (
               <ScrollReveal key={item.year} delay={i * 0.05}>
                 <div className="flex gap-8 items-start py-8 border-b border-gray-100 last:border-0">
                   <span className="shrink-0 text-3xl font-serif text-gray-300 w-20">{item.year}</span>
-                  <p className="text-gray-700 pt-2">{item.event}</p>
+                  <div className="pt-1">
+                    {item.title && (
+                      <h3 className="text-xl font-serif text-gray-900 mb-1">{item.title}</h3>
+                    )}
+                    <p className="text-gray-600 leading-relaxed">{item.event}</p>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Where We're Going */}
+      <section className="py-24 lg:py-32 bg-navy-900">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8">
+          <SectionHeading light label={whereWeGoing.label} title={whereWeGoing.title} />
+          <ScrollReveal delay={0.1}>
+            <div className="mt-8 space-y-6 text-lg text-navy-200 leading-relaxed max-w-2xl">
+              {whereWeGoing.paragraphs.map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <div className="mt-10">
+              <Link
+                href={whereWeGoing.ctaHref}
+                className="inline-flex items-center justify-center px-8 py-4 text-sm font-medium uppercase tracking-widest text-navy-900 bg-white rounded hover:bg-navy-100 transition-colors"
+              >
+                {whereWeGoing.ctaLabel}
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

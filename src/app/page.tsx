@@ -5,7 +5,7 @@ import { getContent } from "@/lib/content";
 
 export default async function Home() {
   const { home, portfolio } = await getContent();
-  const { hero, armA, armB, capabilities, cta } = home;
+  const { hero, whoWeAre, capabilities, cta } = home;
   const featuredProjects = portfolio.projects
     .filter((p) => p.status === "Completed")
     .slice(0, 3);
@@ -94,7 +94,7 @@ export default async function Home() {
 
               {/* Secondary — Scroll cue */}
               <Link
-                href="#arms"
+                href="#who-we-are"
                 aria-label="See more"
                 className="group relative overflow-hidden inline-flex items-center backdrop-blur-md border border-white/30 hover:border-white/60 transition-colors duration-300"
                 style={{
@@ -127,33 +127,31 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Two Arms */}
-      <section id="arms" className="py-24 lg:py-32 bg-white scroll-mt-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {[armA, armB].map((arm, idx) => (
-              <div key={idx} id={idx === 0 ? "services-arm" : "equity-arm"} className="scroll-mt-16">
-                <SectionHeading label={arm.label} title={arm.title} description={arm.description} />
-                <ScrollReveal delay={0.1}>
-                  <ul className="mt-8 space-y-4 text-gray-600 leading-relaxed">
-                    {arm.items.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <div className="shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-900" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </ScrollReveal>
-              </div>
+      {/* Who We Are */}
+      <section id="who-we-are" className="py-24 lg:py-32 bg-white scroll-mt-16">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <ScrollReveal>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-500 mb-10">
+              {whoWeAre.label}
+            </p>
+          </ScrollReveal>
+          <div className="space-y-8">
+            {whoWeAre.paragraphs.map((paragraph, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <p className="text-xl md:text-2xl lg:text-[28px] font-light leading-relaxed text-gray-800">
+                  {paragraph}
+                </p>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* Capabilities */}
-      <section id="capabilities" className="py-24 lg:py-32 bg-gray-50 scroll-mt-16">
+      <section id="capabilities" className="py-24 lg:py-32 bg-navy-900 scroll-mt-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <SectionHeading
+            light
             label={capabilities.label}
             title={capabilities.title}
             description={capabilities.description}
@@ -161,12 +159,12 @@ export default async function Home() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {capabilities.items.map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 0.05}>
-                <div className="group p-8 bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300">
-                  <div className="w-10 h-10 mb-6 rounded bg-gray-100 flex items-center justify-center group-hover:bg-gray-900 transition-colors duration-300">
-                    <div className="w-2 h-2 rounded-full bg-gray-400 group-hover:bg-white transition-colors duration-300" />
+                <div className="group p-8 bg-navy-800/60 rounded-lg border border-navy-700 hover:border-navy-500 hover:bg-navy-800 hover:shadow-lg hover:shadow-navy-950/40 transition-all duration-300">
+                  <div className="w-10 h-10 mb-6 rounded bg-navy-700 flex items-center justify-center group-hover:bg-white transition-colors duration-300">
+                    <div className="w-2 h-2 rounded-full bg-navy-300 group-hover:bg-navy-900 transition-colors duration-300" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-semibold text-white mb-3">{item.title}</h3>
+                  <p className="text-sm text-navy-200 leading-relaxed">{item.description}</p>
                 </div>
               </ScrollReveal>
             ))}

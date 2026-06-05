@@ -42,6 +42,14 @@
       "backgroundImage": "",
       "backgroundVideo": ""
     },
+    "whoWeAre": {
+      "label": "Who We Are",
+      "paragraphs": [
+        "If you're a developer, landowner, or investor navigating a complex project — we provide the architectural coordination, feasibility analysis, and entitlement expertise to move it forward with confidence.",
+        "If you're a capital partner looking for disciplined, operator-led real estate exposure — we offer direct co-investment into YGCCC-owned multifamily developments, structured around alignment and long-term value creation.",
+        "YGCCC is a private real estate and infrastructure holding company building long-term wealth through owned assets and operating businesses. YuDevelopment is its development platform — the engine that sources deals, manages execution, and generates the revenue that funds growth."
+      ]
+    },
     "armA": {
       "label": "A. Development Services",
       "title": "Sales",
@@ -161,17 +169,30 @@
     "milestones": [
       {
         "year": "2024",
-        "event": "YGCCC founded with a dual-arm strategy: services for cash flow, development for equity"
+        "title": "Founded",
+        "event": "YGCCC established with a deliberate dual-arm strategy: services for cash flow, development for long-term equity."
       },
       {
         "year": "2025",
-        "event": "Launched third-party development consulting and entitlement advisory services"
+        "title": "Services Launch",
+        "event": "YuDevelopment begins active third-party engagements — development consulting, entitlement advisory, and architectural coordination."
       },
       {
         "year": "2026",
-        "event": "First YGCCC-owned multifamily project enters predevelopment"
+        "title": "First Owned Asset",
+        "event": "YGCCC's first multifamily project enters predevelopment — the equity arm activates."
       }
-    ]
+    ],
+    "whereWeGoing": {
+      "label": "Looking Ahead",
+      "title": "Where We're Going",
+      "paragraphs": [
+        "YuDevelopment is early in a long game. The foundation is built — an active services practice, a growing project pipeline, and a platform designed to scale without losing the discipline that makes it work.",
+        "We're looking for clients who need a serious development partner, and investors who think in decades."
+      ],
+      "ctaLabel": "Invest With Us",
+      "ctaHref": "/invest"
+    }
   },
   "portfolio": {
     "title": "Portfolio",

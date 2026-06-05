@@ -65,8 +65,14 @@ export interface HomeCta {
   secondaryCta: string;
 }
 
+export interface HomeWhoWeAre {
+  label: string;
+  paragraphs: string[];
+}
+
 export interface HomeContent {
   hero: HomeHero;
+  whoWeAre: HomeWhoWeAre;
   armA: HomeArm;
   armB: HomeArm;
   capabilities: HomeCapabilities;
@@ -99,7 +105,16 @@ export interface AboutValue {
 
 export interface AboutMilestone {
   year: string;
+  title?: string;
   event: string;
+}
+
+export interface AboutWhereWeGoing {
+  label: string;
+  title: string;
+  paragraphs: string[];
+  ctaLabel: string;
+  ctaHref: string;
 }
 
 export interface AboutContent {
@@ -108,6 +123,7 @@ export interface AboutContent {
   stats: AboutStat[];
   values: AboutValue[];
   milestones: AboutMilestone[];
+  whereWeGoing: AboutWhereWeGoing;
 }
 
 export interface TimelineEntry {
@@ -211,6 +227,28 @@ export interface SiteContent {
 
 const SANITY_DOC_ID = "siteContent";
 
+/** Fallback "Who We Are" statement, used when the CMS document predates this field */
+const DEFAULT_WHO_WE_ARE: HomeWhoWeAre = {
+  label: "Who We Are",
+  paragraphs: [
+    "If you're a developer, landowner, or investor navigating a complex project — we provide the architectural coordination, feasibility analysis, and entitlement expertise to move it forward with confidence.",
+    "If you're a capital partner looking for disciplined, operator-led real estate exposure — we offer direct co-investment into YGCCC-owned multifamily developments, structured around alignment and long-term value creation.",
+    "YGCCC is a private real estate and infrastructure holding company building long-term wealth through owned assets and operating businesses. YuDevelopment is its development platform — the engine that sources deals, manages execution, and generates the revenue that funds growth.",
+  ],
+};
+
+/** Fallback "Where We're Going" section, used when the CMS document predates this field */
+const DEFAULT_WHERE_WE_GOING: AboutWhereWeGoing = {
+  label: "Looking Ahead",
+  title: "Where We're Going",
+  paragraphs: [
+    "YuDevelopment is early in a long game. The foundation is built — an active services practice, a growing project pipeline, and a platform designed to scale without losing the discipline that makes it work.",
+    "We're looking for clients who need a serious development partner, and investors who think in decades.",
+  ],
+  ctaLabel: "Invest With Us",
+  ctaHref: "/invest",
+};
+
 const contentPath = path.join(process.cwd(), "src/content/site.json");
 
 /** Read content from local JSON file (fallback) */
@@ -278,6 +316,19 @@ function normalizeProjects(content: SiteContent): SiteContent {
     [k: string]: unknown;
   };
   void _legacyFeatured;
+  const storedWhoWeAre = homeRest.whoWeAre as Partial<HomeWhoWeAre> | undefined;
+  const whoWeAre: HomeWhoWeAre =
+    storedWhoWeAre && Array.isArray(storedWhoWeAre.paragraphs) && storedWhoWeAre.paragraphs.length > 0
+      ? {
+          label: storedWhoWeAre.label || DEFAULT_WHO_WE_ARE.label,
+          paragraphs: storedWhoWeAre.paragraphs,
+        }
+      : DEFAULT_WHO_WE_ARE;
+  const storedWhereWeGoing = content.about?.whereWeGoing as Partial<AboutWhereWeGoing> | undefined;
+  const whereWeGoing: AboutWhereWeGoing =
+    storedWhereWeGoing && Array.isArray(storedWhereWeGoing.paragraphs) && storedWhereWeGoing.paragraphs.length > 0
+      ? { ...DEFAULT_WHERE_WE_GOING, ...storedWhereWeGoing, paragraphs: storedWhereWeGoing.paragraphs }
+      : DEFAULT_WHERE_WE_GOING;
   return {
     ...content,
     brand: {
@@ -285,8 +336,13 @@ function normalizeProjects(content: SiteContent): SiteContent {
       name: mergedName,
       logo: typeof brandRest.logo === "string" ? (brandRest.logo as string) : "",
     },
+    about: {
+      ...content.about,
+      whereWeGoing,
+    },
     home: {
       ...(homeRest as unknown as HomeContent),
+      whoWeAre,
       hero: {
         descriptionLine1,
         descriptionLine2,

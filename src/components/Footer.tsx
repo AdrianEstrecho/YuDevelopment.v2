@@ -76,8 +76,8 @@ export default function Footer({ brand, navigation }: FooterProps) {
             &copy; {new Date().getFullYear()} {brand.copyright}. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-gray-600">
-            <a href="#" className="hover:text-gray-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-400 transition-colors">Terms of Service</a>
+            <Link href="/privacy" className="hover:text-gray-400 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-400 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>
