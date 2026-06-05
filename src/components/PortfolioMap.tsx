@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { PortfolioProject } from "@/lib/content";
@@ -9,9 +9,25 @@ interface Props {
   projects: PortfolioProject[];
 }
 
+const STYLES = {
+  standard: "mapbox://styles/mapbox/streets-v12",
+  satellite: "mapbox://styles/mapbox/satellite-v9",
+  hybrid: "mapbox://styles/mapbox/satellite-streets-v12",
+} as const;
+
+type StyleKey = keyof typeof STYLES;
+
+const STYLE_OPTIONS: { key: StyleKey; label: string }[] = [
+  { key: "standard", label: "Standard" },
+  { key: "satellite", label: "Satellite" },
+  { key: "hybrid", label: "Hybrid" },
+];
+
 export default function PortfolioMap({ projects }: Props) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
+  const didMount = useRef(false);
+  const [styleKey, setStyleKey] = useState<StyleKey>("hybrid");
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -41,7 +57,7 @@ export default function PortfolioMap({ projects }: Props) {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      style: STYLES.hybrid,
       center,
       zoom: 5.2,
       attributionControl: true,
@@ -84,6 +100,15 @@ export default function PortfolioMap({ projects }: Props) {
     };
   }, [projects]);
 
+  useEffect(() => {
+    if (!map.current) return;
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    map.current.setStyle(STYLES[styleKey]);
+  }, [styleKey]);
+
   const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
   if (!token) {
@@ -102,9 +127,32 @@ export default function PortfolioMap({ projects }: Props) {
   }
 
   return (
-    <div
-      ref={mapContainer}
-      className="w-full aspect-[21/9] rounded-lg overflow-hidden border border-gray-200"
-    />
+    <div className="relative">
+      <div
+        ref={mapContainer}
+        className="w-full aspect-[21/9] rounded-lg overflow-hidden border border-gray-200"
+      />
+      <div
+        role="group"
+        aria-label="Map style"
+        className="absolute top-3 left-3 z-10 inline-flex rounded-md overflow-hidden shadow-md ring-1 ring-black/10 bg-white"
+      >
+        {STYLE_OPTIONS.map((opt) => (
+          <button
+            key={opt.key}
+            type="button"
+            onClick={() => setStyleKey(opt.key)}
+            aria-pressed={styleKey === opt.key}
+            className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+              styleKey === opt.key
+                ? "bg-gray-900 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
